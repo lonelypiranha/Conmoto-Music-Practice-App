@@ -8,13 +8,14 @@ import java.time.LocalTime;
  */
 public class Session {
 
+    // REQUIRES: tempo, startBar, endBar, and duration must be > 0, mastery must be >= 0, endBar >= startBar
     // EFFECT: Creates a practice session wih tempo, bars practiced, mastery, duration, and practice date and time
-    public Session() {
-
+    public Session(int tempo, int startBar, int endBar, float mastery, long duration, LocalDate date, LocalTime startTime, LocalTime endTime) {
+        
     }
     
-    public String getTempo() {
-        return "";
+    public int getTempo() {
+        return 0;
     }
 
     public void setTempo(String tempo) {

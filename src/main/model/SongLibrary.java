@@ -9,14 +9,14 @@ import java.util.List;
 
 public class SongLibrary {
 
-     // EFFECTS: constructs a song library with no songs inside
+    // EFFECTS: constructs a song library with no songs inside
      public SongLibrary() {
 
      }
 
      // MODIFIES: this
      // EFFECTS: adds a song to the song library
-     public void addSong() {
+     public void addSong(Song s) {
 
      }
 
@@ -31,6 +31,14 @@ public class SongLibrary {
         return null;
 
      }
+
+     public List<Song> getSongList() {
+        return null;
+    }
+
+    public void setSongList(List<Song> songList) {
+
+    }
 
     
 }
