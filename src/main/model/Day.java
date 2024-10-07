@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.time.LocalDate;
 
@@ -11,50 +12,61 @@ import java.time.LocalDate;
  * This is useful for displaying information for monthly progress summaries.
  */
 public class Day {
+    private List<Session> sessionList;
+    private LocalDate date;
 
     // EFFECT: Creates a day with certain date and an empty list of sessions
     public Day(LocalDate date) {
-
+        sessionList = new ArrayList<>();
+        this.date = date;
     }
     
     // EFFECT: Calculates the average practice duration of a specific song in a particular day
     public long getTotalDuration() {
-        return 0L;
+        long totalDuration = 0L;
+        for (Session s : sessionList) {
+            totalDuration += s.getDuration();
+        }
+        return totalDuration;
     }
 
     // REQUIRES: this must have a non-empty list of sessions
     // EFFECT: Calculates the average practice tempo of a specific song in a particular day
     public int getAverageTempo() {
-        return 0;
+        int totalTempo = 0;
+        for (Session s : sessionList) {
+            totalTempo += s.getTempo();
+        }
+        int averageTempo = totalTempo/sessionList.size();
+        return averageTempo;
     }
 
     // REQUIRES: this must have a non-empty list of sessions
     // EFFECT: Calculates the average mastery level of a specific song in a particular day 
     public float getAverageMastery() {
-        return 0.0f;
+        float totalMastery = 0;
+        for (Session s : sessionList) {
+            totalMastery += s.getOverallMastery();
+        }
+        float averageMastery = totalMastery/sessionList.size();
+        String averageMasteryString = String.valueOf(averageMastery);
+        String averageMasteryStringTruncated = averageMasteryString.substring(0, 3);
+        float finalAverageMastery = Float.parseFloat(averageMasteryStringTruncated);
+        return finalAverageMastery;
     }
 
     // REQUIRES: Session added must have identical date as the date of the Day object
     // MODIFIES: this
     // EFFECT: Adds a session into the list of sessions for the particular day
     public void addSession(Session s) {
-
+        sessionList.add(s);
     }
 
     public List<Session> getSessionList() {
-        return null;
+        return sessionList;
     }
-
-    public void setSessionList(List<Session> sl) {
-
-    }
-
     public LocalDate getLocalDate() {
-        return null;
-    }
-
-    public void setLocalDate(LocalDate d1) {
-
+        return date;
     }
 
 

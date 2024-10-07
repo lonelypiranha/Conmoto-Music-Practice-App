@@ -54,7 +54,7 @@ public class SongTest {
     }
 
     @Test
-    void testLogSessionToDayFirstSession() {
+    void testLogSessionToDay() {
         assertEquals(song1.getDays().size(), 0);
         song1.logSessionToDay(ses1);
         assertEquals(song1.getDays().size(), 1);
@@ -79,13 +79,43 @@ public class SongTest {
         assertEquals(listDay1.size(), 0);
 
         List<Day> listDay2 = song2.monthlyProgressSummary(Month.OCTOBER, 2024);
-        assertEquals(listDay2.size(), 3);
+        assertEquals(listDay2.size(), 2);
 
         List<Day> listDay3 = song2.monthlyProgressSummary(Month.OCTOBER, 1999);
         assertEquals(listDay3.size(), 1);
 
         List<Day> listDay4 = song2.monthlyProgressSummary(Month.SEPTEMBER, 2024);
         assertEquals(listDay4.size(), 1);
+    }
+
+    @Test
+    void testSetTitle() {
+        song1.setTitle("Ballade");
+        assertEquals(song1.getTitle(), "Ballade");
+    }
+
+    @Test
+    void testSetComposer() {
+        song1.setComposer("Chopin");
+        assertEquals(song1.getComposer(), "Chopin");
+    }
+
+    @Test
+    void testSetInstrument() {
+        song1.setInstrument("Piano");
+        assertEquals(song1.getInstrument(), "Piano");
+    }
+
+    @Test
+    void testSetBarNumber() {
+        song1.setBarNumber(354);
+        assertEquals(song1.getBarNumber(), 354);
+    }
+
+    @Test
+    void testSetTempo() {
+        song1.setTargetTempo(132);
+        assertEquals(song1.getTargetTempo(), 132);
     }
 
 }

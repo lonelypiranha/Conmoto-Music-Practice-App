@@ -1,5 +1,6 @@
 package model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /*
@@ -8,37 +9,60 @@ import java.util.List;
  */
 
 public class SongLibrary {
+    private List<Song> songList;
 
-    // EFFECTS: constructs a song library with no songs inside
-     public SongLibrary() {
-
-     }
-
-     // MODIFIES: this
-     // EFFECTS: adds a song to the song library
-     public void addSong(Song s) {
-
-     }
-
-     // EFFECTS: filters through the song library and creates a list of songs composed for the given instrument
-     public List<Song> filterByInstrument(String instrument) {
-        return null;
-
-     }
-
-     // EFFECTS: filters through the song library and creates a list of songs composed by the given composer
-     public List<Song> filterByComposer(String composer) {
-        return null;
-
-     }
-
-     public List<Song> getSongList() {
-        return null;
+    // EFFECTS: constructs an empty song library with no songs inside
+    public SongLibrary() {
+        songList = new ArrayList<>();
     }
 
-    public void setSongList(List<Song> songList) {
+    // REQUIRES: Song to be added must have a different title to the songs already
+    // in the library
+    // MODIFIES: this
+    // EFFECTS: adds a song to the song library
+    public void addSong(Song s) {
+        songList.add(s);
+    }
+
+    // MODIFIES: this
+    // EFFECTS: removes a song to the song library, returns true if successful, return false otherwise
+    public boolean removeSong(Song s) {
+        if (songList.contains(s)) {
+            songList.remove(s);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    // EFFECTS: filters through the song library and creates a list of songs
+    // composed for the given instrument
+    public List<Song> filterByInstrument(String instrument) {
+        List<Song> songFilteredInstrument = new ArrayList<>();
+        for (Song s : songList) {
+            if (s.getInstrument().equals(instrument)) {
+                songFilteredInstrument.add(s);
+            }
+        }
+        return songFilteredInstrument;
 
     }
 
-    
+    // EFFECTS: filters through the song library and creates a list of songs
+    // composed by the given composer
+    public List<Song> filterByComposer(String composer) {
+        List<Song> songFilteredComposer = new ArrayList<>();
+        for (Song s : songList) {
+            if (s.getComposer().equals(composer)) {
+                songFilteredComposer.add(s);
+            }
+        }
+        return songFilteredComposer;
+
+    }
+
+    public List<Song> getSongList() {
+        return songList;
+    }
+
 }

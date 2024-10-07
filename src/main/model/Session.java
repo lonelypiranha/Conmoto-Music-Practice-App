@@ -7,74 +7,50 @@ import java.time.LocalTime;
  * A practice session consists of a tempo, starting bar number, ending bar number, overall mastery, duration, practice date, starting time, and ending time.
  */
 public class Session {
+    private int tempo;
+    private int startBar;
+    private int endBar;
+    private float mastery;
+    private long duration;
+    private LocalDate date;
+    private LocalTime starTime;
+    private LocalTime endTime;
 
     // REQUIRES: tempo, startBar, endBar, and duration must be > 0, mastery must be >= 0, endBar >= startBar
     // EFFECT: Creates a practice session wih tempo, bars practiced, mastery, duration, and practice date and time
     public Session(int tempo, int startBar, int endBar, float mastery, long duration, LocalDate date, LocalTime startTime, LocalTime endTime) {
-        
+        this.tempo = tempo;
+        this.startBar = startBar;
+        this.endBar = endBar;
+        this.mastery = mastery;
+        this.duration = duration;
+        this.date = date;
+        this.starTime = startTime;
+        this.endTime = endTime;
     }
     
     public int getTempo() {
-        return 0;
+        return tempo;
     }
-
-    public void setTempo(String tempo) {
-
-    }
-
     public int getStartBar() {
-        return 0;
+        return startBar;
     }
-
-    public void setStartBar(int startBar) {
-
-    }
-
     public int getEndBar() {
-        return 0;
+        return endBar;
     }
-
-    public void setEndBar(int endBar) {
-
-    }
-
     public float getOverallMastery() {
-        return 0.0f;
+        return mastery;
     }
-
-    public void setOverallMastery(int overallMastery) {
-
-    }
-
     public long getDuration() {
-        return 0L;
+        return duration;
     }
-
-    public void setDuration(long duration) {
-
-    }
-
     public LocalDate getPracticeDate() {
-        return null;
+        return date;
     }
-
-    public void setPracticeDate(LocalDate practiceDate) {
-
-    }
-
     public LocalTime getStartTime() {
-        return null;
+        return starTime;
     }
-
-    public void setStartTime(LocalTime startTime) {
-
-    }
-
     public LocalTime getEndTime() {
-        return null;
-    }
-
-    public void setEndTime(LocalTime endTime) {
-
+        return endTime;
     }
 }

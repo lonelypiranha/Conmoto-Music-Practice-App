@@ -66,5 +66,26 @@ public class SongLibraryTest {
         List<Song> ls2 = lib1.filterByInstrument("Clarinet");
         assertEquals(ls2.size(), 0);
     }
+
+    @Test
+    void testRemoveSongSuccessful() {
+        lib1.addSong(song1);
+        lib1.addSong(song2);
+        lib1.addSong(song3);
+        boolean x = lib1.removeSong(song2);
+        assertTrue(x);
+        assertEquals(lib1.getSongList().size(), 2);
+        assertEquals(lib1.getSongList().get(0).getBarNumber(), 117);
+        assertEquals(lib1.getSongList().get(1).getBarNumber(), 293);
+    }
+
+    @Test
+    void testRemoveSongUnsuccessful() {
+        lib1.addSong(song1);
+        lib1.addSong(song2);
+        boolean x = lib1.removeSong(song3);
+        assertFalse(x);
+        assertEquals(lib1.getSongList().size(), 2);
+    }
     
 }
