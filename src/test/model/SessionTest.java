@@ -13,7 +13,8 @@ public class SessionTest {
 
     @BeforeEach
     void runBefore() {
-        s1 = new Session(50, 1, 50, 3.5f, 1756, LocalDate.of(2024, 10, 5), LocalTime.of(22, 21, 21), LocalTime.of(22, 50, 37));
+        s1 = new Session(50, 1, 50, 3.5f, 1756, LocalDate.of(2024, 10, 5), LocalTime.of(22, 21, 21),
+                LocalTime.of(22, 50, 37));
     }
 
     @Test
@@ -27,5 +28,5 @@ public class SessionTest {
         assertEquals(s1.getStartTime(), LocalTime.of(22, 21, 21));
         assertEquals(s1.getEndTime(), LocalTime.of(22, 50, 37));
     }
-    
+
 }

@@ -101,7 +101,6 @@ public class PracticeApp {
         printNewLine();
     }
 
-    // MODIFIES: this
     // EFFECTS: processes the user's input in the song library menu when there are
     // no songs in the song library
     public void processEmptyLibraryCommands(String input) {
@@ -136,7 +135,6 @@ public class PracticeApp {
         System.out.println("q -> quit application\n");
     }
 
-    // MODIFIES: this
     // EFFECTS: processes the user's input in the song library menu
     public void processViewCommands(String input) {
         printNewLine();
@@ -160,9 +158,6 @@ public class PracticeApp {
         }
     }
 
-    // REQUIRES: barCount is integer and > 0, tempo is integer and > 0, the title
-    // of the added song must be different to the titles of the other songs in the
-    // song library
     // MODIFIES: this
     // EFFECTS: adds a song to the song library
     public void addSong() {
@@ -321,12 +316,11 @@ public class PracticeApp {
         System.out.println("Please select an option:\n");
         System.out.println("p -> start a practice session with this song");
         System.out.println("h -> view the practice history of this song");
-        System.out.println("m -> vview the monthly progress for this song");
+        System.out.println("m -> view the monthly progress for this song");
         System.out.println("r -> return to song library menu");
         System.out.println("q -> quit application\n");
     }
 
-    // MODIFIES: song
     // EFFECTS: processes the user's input in the song details menu
     public void processSongCommands(String input, Song song) {
         printNewLine();
@@ -357,7 +351,6 @@ public class PracticeApp {
         handlePracticeMenu(song, initialTime, date, startTime);
     }
 
-    // MODIFIES: song
     // EFFECTS: displays and processes inputs for the practice menu
     public void handlePracticeMenu(Song song, long initialTime, LocalDate date, LocalTime startTime) {
         System.out.println("Please enter \"e\" to end this practice session");
@@ -370,23 +363,17 @@ public class PracticeApp {
         }
     }
 
-    // MODIFIES: Song
     // EFFECTS: ends practice session, and prompts user for practice session
     // details, then logs the practice session
     public void endPractice(Song song, long initialTime, LocalDate date, LocalTime startTime) {
         LocalTime endTime = LocalTime.now();
         long elapsedTime = System.currentTimeMillis() - initialTime;
-        double elapsedTimeInMinutes = (double) elapsedTime / 60000.0;
-        String elapsedTimeInMinutesString = String.valueOf(elapsedTimeInMinutes);
-        String elapsedTimeInMinutesStringTruncated = elapsedTimeInMinutesString.substring(0, 4);
-        float finalElapsedMinutes = Float.parseFloat(elapsedTimeInMinutesStringTruncated);
+        float finalElapsedMinutes = convertDurationToMinutes(elapsedTime);
         printNewLine();
         System.out.println("Practice session has ended. You practiced for " + finalElapsedMinutes + " minutes!\n");
         collectPracticeDetails(song, elapsedTime, date, startTime, endTime);
     }
 
-    // REQUIRES: tempo, startBar, endBar are integers > 0, endBar >= startBar,
-    // overallMastery is a float and 0 <= overallMastery <= 10
     // MODIFIES: song
     // EFFECTS: Prompts user for practice sesion details, then logs the practice
     // session into the song's session list and day list
@@ -442,72 +429,87 @@ public class PracticeApp {
         }
     }
 
-    // REQUIRES: year is an integer
-    // MODIFIES: song
-    // EFFECTS: displays the practice duration, tempo, bars practiced, and mastery
-    // of all practice sessions in a given month of the year
+    // EFFECTS:
+    // 1. Displays the practice progress in terms of practice duration, tempo,
+    // bars practiced, and mastery of all practice sessions in a given month of the
+    // year
+    // 2. If there are multiple practice sessions in a single day, total the
+    // practice durations and average out the tempos and masteries of all practice
+    // sessions in that day
     public void viewMonthlyProgress(Song song) {
         System.out.println("Enter the exact year whose progress report you want to view: ");
         int year = this.scanner.nextInt();
         printNewLine();
-        System.out.println(
-                "Enter the exact month name whose progress report you want to view. Capitalize the first letter of the month name.");
+        System.out.println("Enter the exact month name whose progress report you want to view.");
+        System.out.println("Capitalize the first letter of the month name.");
         String monthString = this.scanner.next();
         Month month = convertStringToMonth(monthString);
-        List<Day> monthlySummary = song.monthlyProgressSummary(month, year);
+        List<Day> daysInMonth = song.returnDaysInMonth(month, year);
         printNewLine();
         System.out.println("Monthly progress report for " + monthString + " " + year + "\n");
-        if (monthlySummary.isEmpty()) {
+        if (daysInMonth.isEmpty()) {
             System.out.println("No practice session in that month of the year was found.\n");
         } else {
-            System.out.println("Daily total duration progress: ");
-            for (Day day : monthlySummary) {
-                LocalDate date = day.getLocalDate();
-                DateTimeFormatter formatPatternDate = DateTimeFormatter.ofPattern("E, MMM dd yyyy");
-                String formattedDate = date.format(formatPatternDate);
-
-                double durationMinutes = (double) day.getTotalDuration() / 60000.0;
-                String durationMinutesString = String.valueOf(durationMinutes);
-                String durationMinutesStringTruncated = durationMinutesString.substring(0, 4);
-                float finalDuration = Float.parseFloat(durationMinutesStringTruncated);
-                System.out.println(formattedDate + ": " + finalDuration + " minutes\n");
-            }
-            System.out.println("Daily average tempo progress: ");
-            for (Day day : monthlySummary) {
-                LocalDate date = day.getLocalDate();
-                DateTimeFormatter formatPatternDate = DateTimeFormatter.ofPattern("E, MMM dd yyyy");
-                String formattedDate = date.format(formatPatternDate);
-                System.out.println(formattedDate + ": " + day.getAverageTempo() + "\n");
-            }
-            System.out.println("Daily average mastery progress: ");
-            for (Day day : monthlySummary) {
-                LocalDate date = day.getLocalDate();
-                DateTimeFormatter formatPatternDate = DateTimeFormatter.ofPattern("E, MMM dd yyyy");
-                String formattedDate = date.format(formatPatternDate);
-                System.out.println(formattedDate + ": " + day.getAverageMastery() + "\n");
-            }
-            System.out.println("Daily bars practiced progress: ");
-            for (Day day : monthlySummary) {
-                String allBarsPracticed = "";
-                List<Session> sesList = day.getSessionList();
-                for (int i = 0; i < sesList.size(); i++) {
-                    if (i == 0) {
-                        String barsPracticed = String.valueOf(sesList.get(i).getStartBar()) + "-"
-                                + String.valueOf(sesList.get(i).getEndBar());
-                        allBarsPracticed = allBarsPracticed + barsPracticed;
-                    } else {
-                        String barsPracticed = ", " + String.valueOf(sesList.get(i).getStartBar()) + "-"
-                                + String.valueOf(sesList.get(i).getEndBar());
-                        allBarsPracticed = allBarsPracticed + barsPracticed;
-                    }
-                }
-                LocalDate date = day.getLocalDate();
-                DateTimeFormatter formatPatternDate = DateTimeFormatter.ofPattern("E, MMM dd yyyy");
-                String formattedDate = date.format(formatPatternDate);
-                System.out.println(formattedDate + ": " + allBarsPracticed + "\n");
-            }
+            displayDurationProgress(daysInMonth);
+            displayTempoProgress(daysInMonth);
+            displayMasteryProgress(daysInMonth);
+            displayBarsPracticedProgress(daysInMonth);
         }
         handlePostPracticeMenu();
+    }
+
+    // EFFECTS: displays the total practice duration in a given day for all days in
+    // the dayList
+    public void displayDurationProgress(List<Day> dayList) {
+        System.out.println("Daily total duration progress: ");
+        for (Day day : dayList) {
+            String formattedDate = formatDate(day.getLocalDate());
+            float finalDuration = convertDurationToMinutes(day.getTotalDuration());
+            System.out.println(formattedDate + ": " + finalDuration + " minutes");
+        }
+    }
+
+    // EFFECTS: displays the average tempo in a given day for all days in the
+    // dayList
+    public void displayTempoProgress(List<Day> dayList) {
+        System.out.println("Daily average tempo progress: ");
+        for (Day day : dayList) {
+            String formattedDate = formatDate(day.getLocalDate());
+            System.out.println(formattedDate + ": " + day.getAverageTempo() + "\n");
+        }
+    }
+
+    // EFFECTS: displays the average mastery level in a given day for all days in
+    // the dayList
+    public void displayMasteryProgress(List<Day> dayList) {
+        System.out.println("Daily average mastery progress: ");
+        for (Day day : dayList) {
+            String formattedDate = formatDate(day.getLocalDate());
+            System.out.println(formattedDate + ": " + day.getAverageMastery() + "\n");
+        }
+    }
+
+    // EFFECTS: displays the bars practiced in a given day for all days in the
+    // dayList
+    public void displayBarsPracticedProgress(List<Day> dayList) {
+        System.out.println("Daily bars practiced progress: ");
+        for (Day day : dayList) {
+            String allBarsPracticed = "";
+            List<Session> sesList = day.getSessionList();
+            for (int i = 0; i < sesList.size(); i++) {
+                if (i == 0) {
+                    String barsPracticed = String.valueOf(sesList.get(i).getStartBar()) + "-"
+                            + String.valueOf(sesList.get(i).getEndBar());
+                    allBarsPracticed = allBarsPracticed + barsPracticed;
+                } else {
+                    String barsPracticed = ", " + String.valueOf(sesList.get(i).getStartBar()) + "-"
+                            + String.valueOf(sesList.get(i).getEndBar());
+                    allBarsPracticed = allBarsPracticed + barsPracticed;
+                }
+            }
+            String formattedDate = formatDate(day.getLocalDate());
+            System.out.println(formattedDate + ": " + allBarsPracticed + "\n");
+        }
     }
 
     // EFFECTS: displays all practice sessions of a given song along with their
@@ -518,21 +520,10 @@ public class PracticeApp {
             System.out.println("No practice sessions found.\n");
         } else {
             for (Session session : song.getSessions()) {
-                LocalDate date = session.getPracticeDate();
-                DateTimeFormatter formatPatternDate = DateTimeFormatter.ofPattern("E, MMM dd yyyy");
-                String formattedDate = date.format(formatPatternDate);
-
-                LocalTime startTime = session.getStartTime();
-                LocalTime endTime = session.getEndTime();
-                DateTimeFormatter formatPatternTime = DateTimeFormatter.ofPattern("HH:mm:ss");
-                String formattedStartTime = startTime.format(formatPatternTime);
-                String formattedEndTime = endTime.format(formatPatternTime);
-
-                long duration = session.getDuration();
-                double durationMinutes = (double) duration / 60000.0;
-                String durationMinutesString = String.valueOf(durationMinutes);
-                String durationMinutesStringTruncated = durationMinutesString.substring(0, 4);
-                float finalDuration = Float.parseFloat(durationMinutesStringTruncated);
+                String formattedDate = formatDate(session.getPracticeDate());
+                String formattedStartTime = formatTime(session.getStartTime());
+                String formattedEndTime = formatTime(session.getEndTime());
+                float finalDuration = convertDurationToMinutes(session.getDuration());
 
                 System.out.println(formattedDate + " " + formattedStartTime + "-" + formattedEndTime);
                 System.out.println("Tempo: " + session.getTempo());
@@ -544,13 +535,40 @@ public class PracticeApp {
         handlePostPracticeMenu();
     }
 
+    // EFFECTS: formats the date into the given pattern, then returns the formatted
+    // date as a String
+    public String formatDate(LocalDate date) {
+        DateTimeFormatter formatPatternDate = DateTimeFormatter.ofPattern("E, MMM dd yyyy");
+        String formattedDate = date.format(formatPatternDate);
+        return formattedDate;
+    }
+
+    // EFFECTS: formats the time into the given pattern, then returns the formatted
+    // time as a String
+    public String formatTime(LocalTime time) {
+        DateTimeFormatter formatPatternTime = DateTimeFormatter.ofPattern("HH:mm:ss");
+        String formattedTime = time.format(formatPatternTime);
+        return formattedTime;
+    }
+
+    // EFFECTS: converts the duration (in miliseconds) into minutes, returning the
+    // converted duration as a float
+    public float convertDurationToMinutes(long duration) {
+        double durationMinutes = (double) duration / 60000.0;
+        String durationMinutesString = String.valueOf(durationMinutes);
+        String durationMinutesStringTruncated = durationMinutesString.substring(0, 4);
+        float finalDuration = Float.parseFloat(durationMinutesStringTruncated);
+        return finalDuration;
+    }
+
     // EFFECTS: prints a closing message and marks the program as not running
     public void quitApp() {
         System.out.println("Thanks for using Conmoto Music Practice Journal App! See you next time!\n");
         System.exit(0);
     }
 
-    // EFFECTS: returns a Month object that corresponds to the month name stringq
+    // EFFECTS: returns a Month object that corresponds to the month name string
+    @SuppressWarnings("methodlength")
     public Month convertStringToMonth(String month) {
         switch (month) {
             case "January":

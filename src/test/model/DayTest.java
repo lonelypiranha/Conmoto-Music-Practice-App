@@ -20,11 +20,16 @@ public class DayTest {
     @BeforeEach
     void runBefore() {
         day1 = new Day(LocalDate.of(2011, 8, 3));
-        ses1 = new Session(50, 1, 50, 3.5f, 1756, LocalDate.of(2011, 8, 3), LocalTime.of(22, 21, 21), LocalTime.of(22, 50, 37));
-        ses2 = new Session(100, 37, 44, 4.0f, 119, LocalDate.of(2011, 8, 3), LocalTime.of(11, 9, 11), LocalTime.of(11, 11, 10));
-        ses3 = new Session(70, 12, 22, 2.2f, 2, LocalDate.of(2011, 8, 3), LocalTime.of(1, 9, 22), LocalTime.of(1, 9, 24));
-        ses4 = new Session(50, 2, 50, 3.5f, 1756, LocalDate.of(2011, 8, 3), LocalTime.of(22, 21, 21), LocalTime.of(22, 50, 37));
-        ses5 = new Session(103, 37, 44, 4.0f, 119, LocalDate.of(2011, 8, 3), LocalTime.of(11, 9, 11), LocalTime.of(11, 11, 10));
+        ses1 = new Session(50, 1, 50, 3.5f, 1756, LocalDate.of(2011, 8, 3), LocalTime.of(22, 21, 21),
+                LocalTime.of(22, 50, 37));
+        ses2 = new Session(100, 37, 44, 4.0f, 119, LocalDate.of(2011, 8, 3), LocalTime.of(11, 9, 11),
+                LocalTime.of(11, 11, 10));
+        ses3 = new Session(70, 12, 22, 2.2f, 2, LocalDate.of(2011, 8, 3), LocalTime.of(1, 9, 22),
+                LocalTime.of(1, 9, 24));
+        ses4 = new Session(50, 2, 50, 3.5f, 1756, LocalDate.of(2011, 8, 3), LocalTime.of(22, 21, 21),
+                LocalTime.of(22, 50, 37));
+        ses5 = new Session(103, 37, 44, 4.0f, 119, LocalDate.of(2011, 8, 3), LocalTime.of(11, 9, 11),
+                LocalTime.of(11, 11, 10));
     }
 
     @Test
@@ -75,5 +80,5 @@ public class DayTest {
         day1.addSession(ses5);
         assertEquals(day1.getAverageMastery(), 3.4f);
     }
-    
+
 }

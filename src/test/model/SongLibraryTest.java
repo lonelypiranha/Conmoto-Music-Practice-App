@@ -3,6 +3,7 @@ package model;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,6 +13,7 @@ public class SongLibraryTest {
     Song song1;
     Song song2;
     Song song3;
+    List<Song> songList;
 
     @BeforeEach
     void runBefore() {
@@ -19,6 +21,10 @@ public class SongLibraryTest {
         song1 = new Song("Intermezzo op.118 no. 2", "Brahms", "Piano", 117, 72);
         song2 = new Song("Serenade for strings", "Tchaikovsky", "Violin", 293, 110);
         song3 = new Song("Violin Sonata no.1", "Brahms", "Violin", 293, 110);
+        songList = new ArrayList<>();
+        songList.add(song1);
+        songList.add(song2);
+        songList.add(song3);
     }
 
     @Test
@@ -87,5 +93,11 @@ public class SongLibraryTest {
         assertFalse(x);
         assertEquals(lib1.getSongList().size(), 2);
     }
-    
+
+    @Test
+    void testSetSongList() {
+        lib1.setSongList(songList);
+        assertEquals(lib1.getSongList().size(), 3);
+    }
+
 }

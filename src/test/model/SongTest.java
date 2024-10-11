@@ -25,11 +25,16 @@ public class SongTest {
         song1 = new Song("Intermezzo op.118 no. 2", "Brahms", "Piano", 117, 72);
         song2 = new Song("Serenade for strings", "Tchaikovsky", "Violin", 293, 110);
 
-        ses1 = new Session(50, 2, 50, 3.5f, 1756, LocalDate.of(2024, 10, 5), LocalTime.of(22, 21, 21), LocalTime.of(22, 50, 37));
-        ses2 = new Session(100, 37, 44, 4.0f, 119, LocalDate.of(1999, 10, 22), LocalTime.of(11, 9, 11), LocalTime.of(11, 11, 10));
-        ses3 = new Session(70, 12, 22, 2.2f, 2, LocalDate.of(2024, 10, 5), LocalTime.of(1, 9, 22), LocalTime.of(1, 9, 24));
-        ses4 = new Session(50, 2, 50, 3.5f, 1756, LocalDate.of(2024, 10, 19), LocalTime.of(22, 21, 21), LocalTime.of(22, 50, 37));
-        ses5 = new Session(100, 37, 44, 4.0f, 119, LocalDate.of(2024, 9, 22), LocalTime.of(11, 9, 11), LocalTime.of(11, 11, 10));
+        ses1 = new Session(50, 2, 50, 3.5f, 1756, LocalDate.of(2024, 10, 5), LocalTime.of(22, 21, 21),
+                LocalTime.of(22, 50, 37));
+        ses2 = new Session(100, 37, 44, 4.0f, 119, LocalDate.of(1999, 10, 22), LocalTime.of(11, 9, 11),
+                LocalTime.of(11, 11, 10));
+        ses3 = new Session(70, 12, 22, 2.2f, 2, LocalDate.of(2024, 10, 5), LocalTime.of(1, 9, 22),
+                LocalTime.of(1, 9, 24));
+        ses4 = new Session(50, 2, 50, 3.5f, 1756, LocalDate.of(2024, 10, 19), LocalTime.of(22, 21, 21),
+                LocalTime.of(22, 50, 37));
+        ses5 = new Session(100, 37, 44, 4.0f, 119, LocalDate.of(2024, 9, 22), LocalTime.of(11, 9, 11),
+                LocalTime.of(11, 11, 10));
     }
 
     @Test
@@ -67,7 +72,7 @@ public class SongTest {
         assertEquals(song1.getDays().get(0).getSessionList().size(), 2);
     }
 
-    @Test 
+    @Test
     void testMonthlyProgressSummary() {
         song2.logSessionToDay(ses1);
         song2.logSessionToDay(ses2);
@@ -75,47 +80,16 @@ public class SongTest {
         song2.logSessionToDay(ses4);
         song2.logSessionToDay(ses5);
 
-        List<Day> listDay1 = song2.monthlyProgressSummary(Month.MARCH, 2000);
+        List<Day> listDay1 = song2.returnDaysInMonth(Month.MARCH, 2000);
         assertEquals(listDay1.size(), 0);
 
-        List<Day> listDay2 = song2.monthlyProgressSummary(Month.OCTOBER, 2024);
+        List<Day> listDay2 = song2.returnDaysInMonth(Month.OCTOBER, 2024);
         assertEquals(listDay2.size(), 2);
 
-        List<Day> listDay3 = song2.monthlyProgressSummary(Month.OCTOBER, 1999);
+        List<Day> listDay3 = song2.returnDaysInMonth(Month.OCTOBER, 1999);
         assertEquals(listDay3.size(), 1);
 
-        List<Day> listDay4 = song2.monthlyProgressSummary(Month.SEPTEMBER, 2024);
+        List<Day> listDay4 = song2.returnDaysInMonth(Month.SEPTEMBER, 2024);
         assertEquals(listDay4.size(), 1);
     }
-
-    @Test
-    void testSetTitle() {
-        song1.setTitle("Ballade");
-        assertEquals(song1.getTitle(), "Ballade");
-    }
-
-    @Test
-    void testSetComposer() {
-        song1.setComposer("Chopin");
-        assertEquals(song1.getComposer(), "Chopin");
-    }
-
-    @Test
-    void testSetInstrument() {
-        song1.setInstrument("Piano");
-        assertEquals(song1.getInstrument(), "Piano");
-    }
-
-    @Test
-    void testSetBarNumber() {
-        song1.setBarNumber(354);
-        assertEquals(song1.getBarNumber(), 354);
-    }
-
-    @Test
-    void testSetTempo() {
-        song1.setTargetTempo(132);
-        assertEquals(song1.getTargetTempo(), 132);
-    }
-
 }

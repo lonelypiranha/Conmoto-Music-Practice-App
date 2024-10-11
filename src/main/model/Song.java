@@ -6,10 +6,13 @@ import java.time.LocalDate;
 import java.time.Month;
 
 /*
- * A representation of a song that the user has added to the song library.
- * Each song contains a title, composer, instrument, number of bars, and tempo.
- * Each song will have a list of sessions which contains all the practice sessions fro the particular song.
- * Each song will also have a list of days containiing all practice sessions started on that day
+ * 1. A representation of a song that the user has added to the song library.
+ * 2. Each song contains a title, composer, instrument, number of bars, and tempo.
+ * 3. Each song will have a list of sessions which contains all the practice sessions fro the particular song.
+ * 4. Each song will also have a list of days containiing the days in which the song was practiced.
+ * 5. The Song class contains methods for adding a practice session to the full session list,
+ * logging a practice session into its corresponding day in the day list, and also returning
+ * a list of days that are in a given month of the year.
  */
 public class Song {
     private String title;
@@ -20,7 +23,7 @@ public class Song {
     private List<Session> sessions;
     private List<Day> days;
 
-    // REQUIRES: barCount and tempo must be > 0
+    // REQUIRES: barCount and tempo must be integers and > 0
     // EFFECTS: constructs a song with title, composer, instrument, bar count, and
     // tempo
     public Song(String title, String composer, String instrument, int barCount, int tempo) {
@@ -60,14 +63,14 @@ public class Song {
             }
         }
         if (checker) {
-        Day newDay = new Day(s.getPracticeDate());
-        newDay.addSession(s);
-        days.add(newDay);
+            Day newDay = new Day(s.getPracticeDate());
+            newDay.addSession(s);
+            days.add(newDay);
         }
     }
 
     // EFFECTS: returns a list of Days that are in a given month of the year
-    public List<Day> monthlyProgressSummary(Month month, int year) {
+    public List<Day> returnDaysInMonth(Month month, int year) {
         List<Day> dayList = new ArrayList<>();
         for (Day d : days) {
             if (d.getLocalDate().getMonth().equals(month) && (d.getLocalDate().getYear() == year)) {
@@ -81,40 +84,20 @@ public class Song {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getComposer() {
         return composer;
-    }
-
-    public void setComposer(String composer) {
-        this.composer = composer;
     }
 
     public String getInstrument() {
         return instrument;
     }
 
-    public void setInstrument(String instrument) {
-        this.instrument = instrument;
-    }
-
     public int getBarNumber() {
         return barCount;
     }
 
-    public void setBarNumber(int barCount) {
-        this.barCount = barCount;
-    }
-
     public int getTargetTempo() {
         return tempo;
-    }
-
-    public void setTargetTempo(int tempo) {
-        this.tempo = tempo;
     }
 
     public List<Session> getSessions() {
