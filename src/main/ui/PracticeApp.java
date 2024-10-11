@@ -33,7 +33,7 @@ public class PracticeApp {
 
         System.out.println("Welcome to Conmoto Music Practice Journal App!");
 
-        while (isOnMainMenu) { 
+        while (isOnMainMenu) {
             printNewLine();
             handleMainMenu();
         }
@@ -212,8 +212,8 @@ public class PracticeApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: prints the song titles of all songs in the song library that is
-    // composed by the given composer
+    // EFFECTS: filters through the song library by composer name, 
+    // then sets the filtered song list to filteredLibrary
     public void filterByComposer() {
         System.out.println("Enter the exact name of the composer you want to filter by: ");
         String composer = this.scanner.next();
@@ -224,8 +224,8 @@ public class PracticeApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: prints the song titles of all songs in the song library that is
-    // composed for the given instrument
+    // EFFECTS: filters through the song library by instrument name, 
+    // then sets the filtered song list to filteredLibrary
     public void filterByInstrument() {
         System.out.println("Enter the exact name of the instrument you want to filter by: ");
         String instrument = this.scanner.next();
@@ -235,7 +235,7 @@ public class PracticeApp {
         viewFilteredLibrary("instrument", " \"" + instrument + "\"");
     }
 
-    // EFFECTS: displays the title of all songs in the song library
+    // EFFECTS: displays the title of all songs in filteredLibrary
     public void viewFilteredLibrary(String instrumentOrComposer, String name) {
         System.out.println("Your song library filtered by the " + instrumentOrComposer + name + ":\n");
         if (filteredLibrary.getSongList().isEmpty()) {
@@ -368,8 +368,8 @@ public class PracticeApp {
         }
     }
 
-    // EFFECTS: ends practice session, and prompts user for practice session
-    // details, then logs the practice session
+    // EFFECTS: ends practice session, displays practice duration, then proceeds to
+    // prompt the user for the practice session details
     public void endPractice(Song song, long initialTime, LocalDate date, LocalTime startTime) {
         LocalTime endTime = LocalTime.now();
         long elapsedTime = System.currentTimeMillis() - initialTime;
@@ -435,12 +435,12 @@ public class PracticeApp {
     }
 
     // EFFECTS:
-    // 1. Displays the practice progress in terms of practice duration, tempo,
-    // bars practiced, and mastery of all practice sessions in a given month of the
-    // year
-    // 2. If there are multiple practice sessions in a single day, total the
-    // practice durations and average out the tempos and masteries of all practice
-    // sessions in that day
+    // 1. Displays the practice progress of a song by displaying the practice duration,
+    // tempo, bars practiced, and mastery of all practice sessions in a given month
+    // of the year
+    // 2. If there are multiple practice sessions for a song in a single day, total
+    // the practice durations and average out the tempos and masteries of all
+    // practice sessions in that day
     public void viewMonthlyProgress(Song song) {
         System.out.println("Enter the exact year whose progress report you want to view: ");
         int year = this.scanner.nextInt();
@@ -566,7 +566,7 @@ public class PracticeApp {
         return finalDuration;
     }
 
-    // EFFECTS: prints a closing message and marks the program as not running
+    // EFFECTS: prints a closing message and exits program
     public void quitApp() {
         System.out.println("Thanks for using Conmoto Music Practice Journal App! See you next time!\n");
         System.exit(0);
