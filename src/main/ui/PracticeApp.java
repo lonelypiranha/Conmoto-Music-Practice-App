@@ -468,7 +468,7 @@ public class PracticeApp {
         for (Day day : dayList) {
             String formattedDate = formatDate(day.getLocalDate());
             float finalDuration = convertDurationToMinutes(day.getTotalDuration());
-            System.out.println(formattedDate + ": " + finalDuration + " minutes");
+            System.out.println(formattedDate + ": " + finalDuration + " minutes\n");
         }
     }
 
