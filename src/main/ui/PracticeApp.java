@@ -193,7 +193,7 @@ public class PracticeApp {
     // MODIFIES: this
     // EFFECTS: removes a song from the song library
     public void removeSong() {
-        System.out.println("Enter the exact name of the song you want to remove: ");
+        System.out.println("Enter the exact title of the song you want to remove: ");
         String song = this.scanner.next();
         printNewLine();
         boolean checker = false;
@@ -286,7 +286,7 @@ public class PracticeApp {
     // 2. Gives options for the user to start a practice session for the song amd
     // view the song's practice history and monthly progress summary.
     public void viewSongDetails() {
-        System.out.println("Enter the exact name of the song whose details you want to view: ");
+        System.out.println("Enter the exact title of the song whose details you want to view: ");
         String song = this.scanner.next();
         printNewLine();
         boolean checker = false;
