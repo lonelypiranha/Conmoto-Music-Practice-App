@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /*
- * A representation of a collection of songs that the user has added to the song library
- * The song library can be filtered by composer or by instrument.
+ * 1. A representation of a collection of songs that the user has added to the song library.
+ * 2. The song library contains methods for adding and removing songs to/from the song library.
+ * 3. The song library can be filtered by composer or by instrument.
  */
 
 public class SongLibrary {
@@ -25,7 +26,8 @@ public class SongLibrary {
     }
 
     // MODIFIES: this
-    // EFFECTS: removes a song to the song library, returns true if successful, return false otherwise
+    // EFFECTS: removes a song to the song library, returns true if successful,
+    // return false otherwise
     public boolean removeSong(Song s) {
         if (songList.contains(s)) {
             songList.remove(s);
@@ -63,6 +65,10 @@ public class SongLibrary {
 
     public List<Song> getSongList() {
         return songList;
+    }
+
+    public void setSongList(List<Song> songList) {
+        this.songList = songList;
     }
 
 }
