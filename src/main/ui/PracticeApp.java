@@ -13,6 +13,9 @@ import java.util.List;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+// A music practice journal app that allows the user to add songs to a practice library 
+// and start practice sessions on the songs. The app also allows the user to 
+// view their practice progress on each song in the song library.
 public class PracticeApp {
     private SongLibrary songlibrary;
     private SongLibrary filteredLibrary;
