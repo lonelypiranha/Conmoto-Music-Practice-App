@@ -6,9 +6,9 @@ import java.time.LocalDate;
 
 /*
  * 1. A representation of a day in a year.
- * 2. Each day contains a list of practice sessions that are started on that day.
- * 3. The day class contains methods for finding the total practice duration 
- * and average values of practice tempos and overall masteries of all practice sessions
+ * 2. Each Day contains a list of practice sessions that are started on that day.
+ * 3. The Day class contains methods for finding the total practice duration 
+ * and average values of practice tempos and masteries of all practice sessions
  * in the session list. This is useful for displaying information for monthly progress summaries.
  */
 public class Day {
@@ -21,8 +21,8 @@ public class Day {
         this.date = date;
     }
 
-    // EFFECT: Calculates the average practice duration of a specific song in a
-    // particular day
+    // EFFECT: Calculates the total practice duration of all practice sessions in
+    // the sessionList
     public long getTotalDuration() {
         long totalDuration = 0L;
         for (Session s : sessionList) {
@@ -31,9 +31,9 @@ public class Day {
         return totalDuration;
     }
 
-    // REQUIRES: this must have a non-empty list of sessions
-    // EFFECT: Calculates the average practice tempo of a specific song in a
-    // particular day
+    // REQUIRES: this must have a non-empty sessionList
+    // EFFECT: Calculates the average practice tempo of all practice sessions in the
+    // sessionList
     public int getAverageTempo() {
         int totalTempo = 0;
         for (Session s : sessionList) {
@@ -43,9 +43,9 @@ public class Day {
         return averageTempo;
     }
 
-    // REQUIRES: this must have a non-empty list of sessions
-    // EFFECT: Calculates the average mastery level of a specific song in a
-    // particular day
+    // REQUIRES: this must have a non-empty sessionList
+    // EFFECT: Calculates the average mastery level of all practice sessions in the
+    // sessionList
     public float getAverageMastery() {
         float totalMastery = 0;
         for (Session s : sessionList) {
@@ -58,10 +58,9 @@ public class Day {
         return finalAverageMastery;
     }
 
-    // REQUIRES: Session added must have identical date as the date of the Day
-    // object
+    // REQUIRES: Session added must have identical date as this.getLocalDate()
     // MODIFIES: this
-    // EFFECT: Adds a session into the list of sessions for the particular day
+    // EFFECT: Adds a session into the sessionList
     public void addSession(Session s) {
         sessionList.add(s);
     }

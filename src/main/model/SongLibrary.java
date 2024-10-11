@@ -26,7 +26,7 @@ public class SongLibrary {
     }
 
     // MODIFIES: this
-    // EFFECTS: removes a song to the song library, returns true if successful,
+    // EFFECTS: removes a song from the song library, returns true if successful,
     // return false otherwise
     public boolean removeSong(Song s) {
         if (songList.contains(s)) {

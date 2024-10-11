@@ -33,13 +33,15 @@ public class PracticeApp {
 
         System.out.println("Welcome to Conmoto Music Practice Journal App!");
 
-        while (isOnMainMenu) {
+        while (isOnMainMenu) { 
             printNewLine();
             handleMainMenu();
         }
     }
 
     // EFFECTS: displays and processes inputs for the main menu
+    // SOURCE: All code in this project that involves displaying and processing user
+    // commands is inspired by the Flashcard Reviewer app from lab 4
     public void handleMainMenu() {
         displayMenu();
         String input = this.scanner.next();
