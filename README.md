@@ -12,3 +12,5 @@ This app will be used by **musicians** and **people who play a musical instrumen
 - As a user, I want to be able to **start** a **practice session** using a song from my song library and **start a stopwatch** during my practice session to track my practice duration.
 - As a user, I want to be able to **log** my **practice duration, tempo, bars practiced, and overall mastery** after **every practice session.**
 - As a user, I want to be able to **view** my **monthly practice progress** (in terms of practice duration, bars practiced, tempo, and overall mastery) on **each song** in my song library.
+- As a user, I want to be able to save my song library, along with the song details and practice history of each song in it, to file (if I want to).
+- As a user, I want to be able to load my song library, along with the song details and practice history of each song in it, from file (if I want to).
