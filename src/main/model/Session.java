@@ -3,12 +3,16 @@ package model;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
+import org.json.JSONObject;
+
+import persistence.Writable;
+
 /*
  * 1. A representation of a practice session for a particular song
  * 2. A practice session consists of a tempo, starting bar number, ending bar number, 
  * overall mastery, duration, practice date, starting time, and ending time.
  */
-public class Session {
+public class Session implements Writable{
     private int tempo;
     private int startBar;
     private int endBar;
@@ -66,5 +70,10 @@ public class Session {
 
     public LocalTime getEndTime() {
         return endTime;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        return null;
     }
 }

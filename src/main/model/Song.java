@@ -2,6 +2,11 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.json.JSONObject;
+
+import persistence.Writable;
+
 import java.time.LocalDate;
 import java.time.Month;
 
@@ -14,7 +19,7 @@ import java.time.Month;
  * logging a practice session into its corresponding day in the day list, and also returning
  * a list of days that are in a given month of the year.
  */
-public class Song {
+public class Song implements Writable{
     private String title;
     private String composer;
     private String instrument;
@@ -107,5 +112,10 @@ public class Song {
 
     public List<Day> getDays() {
         return days;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        return null;
     }
 }

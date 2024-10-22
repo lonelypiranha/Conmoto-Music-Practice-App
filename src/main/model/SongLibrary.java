@@ -3,13 +3,18 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import persistence.Writable;
+
 /*
  * 1. A representation of a collection of songs that the user has added to the song library.
  * 2. The song library contains methods for adding and removing songs to/from the song library.
  * 3. The song library can be filtered by composer or by instrument.
  */
 
-public class SongLibrary {
+public class SongLibrary implements Writable{
     private List<Song> songList;
 
     // EFFECTS: constructs an empty song library with no songs inside
@@ -69,6 +74,16 @@ public class SongLibrary {
 
     public void setSongList(List<Song> songList) {
         this.songList = songList;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        return null;
+    }
+
+    // EFFECTS: returns things in this workroom as a JSON array
+    private JSONArray songsToJson() {
+        return null;
     }
 
 }

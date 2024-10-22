@@ -2,6 +2,11 @@ package model;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import org.json.JSONObject;
+
+import persistence.Writable;
+
 import java.time.LocalDate;
 
 /*
@@ -11,7 +16,7 @@ import java.time.LocalDate;
  * and average values of practice tempos and masteries of all practice sessions
  * in the session list. This is useful for displaying information for monthly progress summaries.
  */
-public class Day {
+public class Day implements Writable{
     private List<Session> sessionList;
     private LocalDate date;
 
@@ -71,6 +76,11 @@ public class Day {
 
     public LocalDate getLocalDate() {
         return date;
+    }
+
+    @Override
+    public JSONObject toJson() {
+        return null;
     }
 
 }
