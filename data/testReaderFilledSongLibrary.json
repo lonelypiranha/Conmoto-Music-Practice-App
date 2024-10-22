@@ -40,7 +40,7 @@
             ],
             "days": [
                 {
-                    "sessionList": [
+                    "sessions": [
                         {
                             "tempo": 12,
                             "startBar": 11,
@@ -55,7 +55,7 @@
                     "date": "2024-12-09"
                 },
                 {
-                    "sessionList": [
+                    "sessions": [
                         {
                             "tempo": 69,
                             "startBar": 30,
@@ -63,7 +63,7 @@
                             "mastery": 5,
                             "duration": 900,
                             "date": "2020-02-11",
-                            "startTime": "12:22:33.000333",
+                            "startTime": "12:22:33.000444",
                             "endTime": "14:12:54.434544"
                         },
                         {
@@ -111,7 +111,7 @@
             ],
             "days": [
                 {
-                    "sessionList": [
+                    "sessions": [
                         {
                             "tempo": 120,
                             "startBar": 1,
@@ -126,7 +126,7 @@
                     "date": "1999-10-22"
                 },
                 {
-                    "sessionList": [
+                    "sessions": [
                         {
                             "tempo": 100,
                             "startBar": 2,
