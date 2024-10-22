@@ -74,6 +74,15 @@ public class Session implements Writable{
 
     @Override
     public JSONObject toJson() {
-        return null;
+        JSONObject json = new JSONObject();
+        json.put("tempo", tempo);
+        json.put("startBar", startBar);
+        json.put("endBar", endBar);
+        json.put("mastery", mastery);
+        json.put("duration", duration);
+        json.put("date", date);
+        json.put("startTime", starTime);
+        json.put("endTime", endTime);
+        return json;
     }
 }

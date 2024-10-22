@@ -78,12 +78,20 @@ public class SongLibrary implements Writable{
 
     @Override
     public JSONObject toJson() {
-        return null;
+        JSONObject json = new JSONObject();
+        json.put("songList", songsToJson());
+        return json;
     }
 
-    // EFFECTS: returns things in this workroom as a JSON array
+    // EFFECTS: returns songs in this SongLibrary as a JSON array
     private JSONArray songsToJson() {
-        return null;
+        JSONArray jsonArray = new JSONArray();
+
+        for (Song s : songList) {
+            jsonArray.put(s.toJson());
+        }
+
+        return jsonArray;
     }
 
 }

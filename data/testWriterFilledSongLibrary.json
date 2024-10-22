@@ -1,0 +1,135 @@
+{"songList": [
+    {
+        "barCount": 567,
+        "sessions": [
+            {
+                "duration": 1009,
+                "date": "1999-10-22",
+                "tempo": 120,
+                "startTime": "12:33:47.900922",
+                "endTime": "17:11:37.555444",
+                "startBar": 1,
+                "endBar": 30,
+                "mastery": 7
+            },
+            {
+                "duration": 550,
+                "date": "1456-04-30",
+                "tempo": 100,
+                "startTime": "04:24:30.234111",
+                "endTime": "07:22:34.908456",
+                "startBar": 2,
+                "endBar": 100,
+                "mastery": 1.1
+            }
+        ],
+        "composer": "Schubert",
+        "tempo": 132,
+        "days": [{
+            "date": "1999-10-22",
+            "sessions": [
+                {
+                    "duration": 1009,
+                    "date": "1999-10-22",
+                    "tempo": 120,
+                    "startTime": "12:33:47.900922",
+                    "endTime": "17:11:37.555444",
+                    "startBar": 1,
+                    "endBar": 30,
+                    "mastery": 7
+                },
+                {
+                    "duration": 1009,
+                    "date": "1999-10-22",
+                    "tempo": 120,
+                    "startTime": "12:33:47.900922",
+                    "endTime": "17:11:37.555444",
+                    "startBar": 1,
+                    "endBar": 30,
+                    "mastery": 7
+                }
+            ]
+        }],
+        "instrument": "Violin",
+        "title": "Quartet"
+    },
+    {
+        "barCount": 123,
+        "sessions": [
+            {
+                "duration": 120,
+                "date": "2024-12-09",
+                "tempo": 12,
+                "startTime": "22:33:45.431239",
+                "endTime": "23:01:07.123124",
+                "startBar": 11,
+                "endBar": 50,
+                "mastery": 3.3
+            },
+            {
+                "duration": 900,
+                "date": "2020-02-11",
+                "tempo": 69,
+                "startTime": "12:22:33.000333",
+                "endTime": "14:12:54.434544",
+                "startBar": 30,
+                "endBar": 100,
+                "mastery": 5
+            },
+            {
+                "duration": 100,
+                "date": "2020-02-11",
+                "tempo": 70,
+                "startTime": "15:22:33.000333",
+                "endTime": "16:12:54.434544",
+                "startBar": 31,
+                "endBar": 101,
+                "mastery": 6.6
+            }
+        ],
+        "composer": "Beethoven",
+        "tempo": 78,
+        "days": [
+            {
+                "date": "2024-12-09",
+                "sessions": [{
+                    "duration": 120,
+                    "date": "2024-12-09",
+                    "tempo": 12,
+                    "startTime": "22:33:45.431239",
+                    "endTime": "23:01:07.123124",
+                    "startBar": 11,
+                    "endBar": 50,
+                    "mastery": 3.3
+                }]
+            },
+            {
+                "date": "2020-02-11",
+                "sessions": [
+                    {
+                        "duration": 900,
+                        "date": "2020-02-11",
+                        "tempo": 69,
+                        "startTime": "12:22:33.000333",
+                        "endTime": "14:12:54.434544",
+                        "startBar": 30,
+                        "endBar": 100,
+                        "mastery": 5
+                    },
+                    {
+                        "duration": 100,
+                        "date": "2020-02-11",
+                        "tempo": 70,
+                        "startTime": "15:22:33.000333",
+                        "endTime": "16:12:54.434544",
+                        "startBar": 31,
+                        "endBar": 101,
+                        "mastery": 6.6
+                    }
+                ]
+            }
+        ],
+        "instrument": "Piano",
+        "title": "Sonata"
+    }
+]}

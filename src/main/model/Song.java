@@ -3,6 +3,7 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import persistence.Writable;
@@ -116,6 +117,35 @@ public class Song implements Writable{
 
     @Override
     public JSONObject toJson() {
-        return null;
+        JSONObject json = new JSONObject();
+        json.put("title", title);
+        json.put("composer", composer);
+        json.put("instrument", instrument);
+        json.put("barCount", barCount);
+        json.put("tempo", tempo);
+        json.put("sessions", sessionsToJson());
+        json.put("days", daysToJson());
+        return json;
+    }
+
+    // EFFECTS: returns sessions in this Song as a JSON array
+    private JSONArray sessionsToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Session s : sessions) {
+            jsonArray.put(s.toJson());
+        }
+
+        return jsonArray;
+    }
+
+    private JSONArray daysToJson() {
+        JSONArray jsonArray = new JSONArray();
+
+        for (Day d : days) {
+            jsonArray.put(d.toJson());
+        }
+
+        return jsonArray;
     }
 }
