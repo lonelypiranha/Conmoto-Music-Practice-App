@@ -79,6 +79,7 @@ public class Day implements Writable{
         return date;
     }
 
+    // This method is modelled on the JsonSerializationDemo
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
@@ -88,7 +89,8 @@ public class Day implements Writable{
         return json;
     }
 
-    // EFFECTS: returns sessions in this Song as a JSON array
+    // EFFECTS: returns sessions in this Day as a JSON array
+    // This method is modelled on the JsonSerializationDemo
     private JSONArray sessionsToJson() {
         JSONArray jsonArray = new JSONArray();
 

@@ -7,9 +7,13 @@ import model.Day;
 import model.Session;
 import model.Song;
 import model.SongLibrary;
+import persistence.JsonReader;
+import persistence.JsonWriter;
 
 import java.util.Scanner;
 import java.util.List;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 
@@ -21,7 +25,9 @@ public class PracticeApp {
     private SongLibrary filteredLibrary;
 
     private Scanner scanner;
-    private boolean isOnMainMenu;
+    private static final String JSON_STORE = "./data/SongLibrary.json";
+    private JsonWriter jsonWriter;
+    private JsonReader jsonReader;
 
     // EFFECTS: creates one instance of Conmoto Music Practice Journal console app
     public PracticeApp() {
@@ -29,14 +35,12 @@ public class PracticeApp {
         this.filteredLibrary = new SongLibrary();
         this.scanner = new Scanner(System.in);
         scanner.useDelimiter(System.lineSeparator());
-        isOnMainMenu = true;
+        jsonWriter = new JsonWriter(JSON_STORE);
+        jsonReader = new JsonReader(JSON_STORE);
 
-        System.out.println("Welcome to Conmoto Music Practice Journal App!");
+        System.out.println("Welcome to Conmoto Music Practice Journal App!\n");
 
-        while (isOnMainMenu) {
-            printNewLine();
-            handleMainMenu();
-        }
+        handleMainMenu();
     }
 
     // EFFECTS: displays and processes inputs for the main menu
@@ -52,6 +56,7 @@ public class PracticeApp {
     public void displayMenu() {
         System.out.println("Please select an option:\n");
         System.out.println("v -> view song library");
+        System.out.println("l -> load SongLibrary from file");
         System.out.println("q -> quit application");
         printNewLine();
 
@@ -62,6 +67,8 @@ public class PracticeApp {
         printNewLine();
         if (input.equals("v")) {
             viewSongLibrary();
+        } else if (input.equals("l")) {
+            loadSongLibrary("main");
         } else if (input.equals("q")) {
             quitApp();
         } else {
@@ -73,7 +80,6 @@ public class PracticeApp {
 
     // EFFECTS: displays the title of all songs in the song library
     public void viewSongLibrary() {
-        isOnMainMenu = false;
         System.out.println("Your song library:\n");
         if (songlibrary.getSongList().isEmpty()) {
             System.out.println("Your song library is empty. Please add a song.\n");
@@ -102,6 +108,8 @@ public class PracticeApp {
     public void displayEmptyLibraryMenu() {
         System.out.println("Please select an option:\n");
         System.out.println("a -> add a song to the song library");
+        System.out.println("l -> load SongLibrary from file");
+        System.out.println("s -> save SongLibrary to file");
         System.out.println("q -> quit application");
         printNewLine();
     }
@@ -112,7 +120,11 @@ public class PracticeApp {
         printNewLine();
         if (input.equals("a")) {
             addSong();
-        } else if (input.equals("q")) {
+        } else if (input.equals("l")) {
+            loadSongLibrary("empty");
+        } else if (input.equals("s")) {
+            saveSongLibrary("empty");
+        }else if (input.equals("q")) {
             quitApp();
         } else {
             System.out.println("Invalid input. Please enter a valid input\n");
@@ -137,6 +149,8 @@ public class PracticeApp {
         System.out.println("v -> view all songs in the song library");
         System.out.println("i -> filter song library by instrument");
         System.out.println("c -> filter song library by composer");
+        System.out.println("l -> load SongLibrary from file");
+        System.out.println("s -> save SongLibrary to file");
         System.out.println("q -> quit application\n");
     }
 
@@ -155,6 +169,10 @@ public class PracticeApp {
             filterByInstrument();
         } else if (input.equals("c")) {
             filterByComposer();
+        } else if (input.equals("l")) {
+            loadSongLibrary("view");
+        } else if (input.equals("s")) {
+            saveSongLibrary("view");
         } else if (input.equals("q")) {
             quitApp();
         } else {
@@ -564,6 +582,44 @@ public class PracticeApp {
         String durationMinutesStringTruncated = durationMinutesString.substring(0, 4);
         float finalDuration = Float.parseFloat(durationMinutesStringTruncated);
         return finalDuration;
+    }
+
+    // EFFECTS: saves the SongLibrary to file
+    private void saveSongLibrary(String s) {
+        try {
+            jsonWriter.open();
+            jsonWriter.write(songlibrary);
+            jsonWriter.close();
+            System.out.println("Saved SongLibrary" + " to " + JSON_STORE);
+            if (s.equals("empty")) {
+                handleEmptyMenu();
+            }
+            else if (s.equals("view")) {
+                viewSongLibrary();
+            }
+        } catch (FileNotFoundException e) {
+            System.out.println("Unable to write to file: " + JSON_STORE);
+        }
+    }
+
+    // MODIFIES: this
+    // EFFECTS: loads SongLibrary from file
+    private void loadSongLibrary(String s) {
+        try {
+            songlibrary = jsonReader.read();
+            System.out.println("Loaded SongLibrary" + " from " + JSON_STORE);
+            if (s.equals("main")) {
+                handleMainMenu();
+            }
+            else if (s.equals("empty")) {
+                viewSongLibrary();
+            }
+            else if (s.equals("view")) {
+                viewSongLibrary();
+            }
+        } catch (IOException e) {
+            System.out.println("Unable to read from file: " + JSON_STORE);
+        }
     }
 
     // EFFECTS: prints a closing message and exits program

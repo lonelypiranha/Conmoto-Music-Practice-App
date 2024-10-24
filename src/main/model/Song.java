@@ -115,6 +115,7 @@ public class Song implements Writable{
         return days;
     }
 
+    // This method is modelled on the JsonSerializationDemo
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
@@ -129,6 +130,7 @@ public class Song implements Writable{
     }
 
     // EFFECTS: returns sessions in this Song as a JSON array
+    // This method is modelled on the JsonSerializationDemo
     private JSONArray sessionsToJson() {
         JSONArray jsonArray = new JSONArray();
 
@@ -139,6 +141,8 @@ public class Song implements Writable{
         return jsonArray;
     }
 
+    // EFFECTS: returns days in this Song as a JSON array
+    // This method is modelled on the JsonSerializationDemo
     private JSONArray daysToJson() {
         JSONArray jsonArray = new JSONArray();
 

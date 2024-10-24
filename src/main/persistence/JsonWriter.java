@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import java.io.*;
 
 // Represents a writer that writes JSON representation of SongLibrary to file
+// All code in this class is modelled on the JsonSerializationDemo
 public class JsonWriter {
     private static final int TAB = 4;
     private PrintWriter writer;

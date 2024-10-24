@@ -72,6 +72,7 @@ public class Session implements Writable{
         return endTime;
     }
 
+    // This method is modelled on the JsonSerializationDemo
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();

@@ -76,6 +76,7 @@ public class SongLibrary implements Writable{
         this.songList = songList;
     }
 
+    // This method is modelled on the JsonSerializationDemo
     @Override
     public JSONObject toJson() {
         JSONObject json = new JSONObject();
@@ -84,6 +85,7 @@ public class SongLibrary implements Writable{
     }
 
     // EFFECTS: returns songs in this SongLibrary as a JSON array
+    // This method is modelled on the JsonSerializationDemo
     private JSONArray songsToJson() {
         JSONArray jsonArray = new JSONArray();
 

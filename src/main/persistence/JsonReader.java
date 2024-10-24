@@ -16,7 +16,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import org.json.*;
-import org.junit.experimental.categories.Category;
 
 // Represents a reader that reads a song library from JSON data stored in file
 // All code in this class is modelled on the JsonSerializationDemo
@@ -48,7 +47,7 @@ public class JsonReader {
         return contentBuilder.toString();
     }
 
-    // EFFECTS: parses song library from JSON object and returns it
+    // EFFECTS: parses SongLibrary from JSON object and returns it
     private SongLibrary parseSongLibrary(JSONObject jsonObject) {
         SongLibrary sl = new SongLibrary();
         addSongs(sl, jsonObject);
@@ -56,7 +55,7 @@ public class JsonReader {
     }
 
     // MODIFIES: sl
-    // EFFECTS: parses songs from JSON object and adds them to song library
+    // EFFECTS: parses Songs from JSON object and adds them to SongLibrary
     private void addSongs(SongLibrary sl, JSONObject jsonObject) {
         JSONArray jsonArray = jsonObject.getJSONArray("songList");
         for (Object json : jsonArray) {
@@ -66,7 +65,7 @@ public class JsonReader {
     }
 
     // MODIFIES: sl
-    // EFFECTS: parses one song from JSON object and adds it to song library
+    // EFFECTS: parses one Song from JSON object and adds it to SongLibrary
     private void addSong(SongLibrary sl, JSONObject jsonObject) {
         String title = jsonObject.getString("title");
         String composer = jsonObject.getString("composer");

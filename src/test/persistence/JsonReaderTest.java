@@ -13,7 +13,6 @@ import model.Session;
 import model.Song;
 import model.SongLibrary;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 public class JsonReaderTest extends JsonTest {

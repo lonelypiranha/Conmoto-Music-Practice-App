@@ -1,0 +1,65 @@
+{"songList": [
+    {
+        "barCount": 32312,
+        "sessions": [],
+        "composer": "eded",
+        "tempo": 1232,
+        "days": [],
+        "instrument": "rere",
+        "title": "l"
+    },
+    {
+        "barCount": 33,
+        "sessions": [
+            {
+                "duration": 2141,
+                "date": "2024-10-22",
+                "tempo": 90,
+                "startTime": "15:48:31.567843",
+                "endTime": "15:48:33.690511",
+                "startBar": 434,
+                "endBar": 33,
+                "mastery": 2.2
+            },
+            {
+                "duration": 1157,
+                "date": "2024-10-22",
+                "tempo": 4,
+                "startTime": "15:49:12.792152",
+                "endTime": "15:49:13.949681",
+                "startBar": 4,
+                "endBar": 3,
+                "mastery": 3.3
+            }
+        ],
+        "composer": "dexieme",
+        "tempo": 33,
+        "days": [{
+            "date": "2024-10-22",
+            "sessions": [
+                {
+                    "duration": 2141,
+                    "date": "2024-10-22",
+                    "tempo": 90,
+                    "startTime": "15:48:31.567843",
+                    "endTime": "15:48:33.690511",
+                    "startBar": 434,
+                    "endBar": 33,
+                    "mastery": 2.2
+                },
+                {
+                    "duration": 1157,
+                    "date": "2024-10-22",
+                    "tempo": 4,
+                    "startTime": "15:49:12.792152",
+                    "endTime": "15:49:13.949681",
+                    "startBar": 4,
+                    "endBar": 3,
+                    "mastery": 3.3
+                }
+            ]
+        }],
+        "instrument": "ded",
+        "title": "bilan"
+    }
+]}

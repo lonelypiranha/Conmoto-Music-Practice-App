@@ -51,7 +51,7 @@ class JsonWriterTest extends JsonTest {
             SongLibrary sl = new SongLibrary();
             Song sg1= new Song("Quartet", "Schubert", "Violin", 567, 132);
             Song sg2 = new Song("Sonata", "Beethoven", "Piano", 123, 78);
-
+ 
             Session s1 = new Session(120, 1, 30, 7, 1009, LocalDate.of(1999, 10, 22), LocalTime.of(12, 33, 47, 900922000), LocalTime.of(17, 11, 37, 555444000));
             Session s2 = new Session(100, 2, 100, 1.1f, 550, LocalDate.of(1456, 4, 30), LocalTime.of(4, 24, 30, 234111000), LocalTime.of(7, 22, 34, 908456000));
             Session s3 = new Session(12, 11, 50, 3.3f, 120, LocalDate.of(2024, 12, 9), LocalTime.of(22, 33, 45, 431239000), LocalTime.of(23, 1, 7, 123124000));
