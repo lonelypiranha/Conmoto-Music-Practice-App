@@ -1,6 +1,5 @@
 package persistence;
 
-import model.Day;
 import model.Session;
 import model.Song;
 import model.SongLibrary;
@@ -72,19 +71,16 @@ public class JsonReader {
         String instrument = jsonObject.getString("instrument");
         int barCount = jsonObject.getInt("barCount");
         int tempo = jsonObject.getInt("tempo");
-        List<Session> sessions = getSessionsFromJSON(jsonObject);
-        List<Day> days = getDaysFromJSON(jsonObject);
+        List<Session> sessions = getSessionsFromJson(jsonObject);
         Song song = new Song(title, composer, instrument, barCount, tempo);
         for (Session s : sessions) {
             song.logSessionToSessionList(s);
-        }
-        for (Session s : sessions) {
             song.logSessionToDay(s);
         }
         sl.addSong(song);
     }
 
-    public List<Session> getSessionsFromJSON(JSONObject jsonObject) {
+    public List<Session> getSessionsFromJson(JSONObject jsonObject) {
         List<Session> sessions = new ArrayList<>();
         JSONArray jsonArray = jsonObject.getJSONArray("sessions");
         for (Object json : jsonArray) {
@@ -101,23 +97,5 @@ public class JsonReader {
             sessions.add(newSession);
         }
         return sessions;
-    }
-
-    public List<Day> getDaysFromJSON(JSONObject jsonObject) {
-        List<Day> days = new ArrayList<>();
-        JSONArray jsonArray = jsonObject.getJSONArray("days");
-        for (Object json : jsonArray) {
-
-            JSONObject nextDay = (JSONObject) json;
-            List<Session> sessions = getSessionsFromJSON(nextDay);
-            LocalDate date = LocalDate.parse(nextDay.getString("date"));
-            Day newDay = new Day(date);
-            for (Session s : sessions) {
-                newDay.addSession(s);
-            }
-            days.add(newDay);
-        }
-
-        return days;
     }
 }

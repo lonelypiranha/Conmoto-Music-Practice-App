@@ -124,7 +124,7 @@ public class PracticeApp {
             loadSongLibrary("empty");
         } else if (input.equals("s")) {
             saveSongLibrary("empty");
-        }else if (input.equals("q")) {
+        } else if (input.equals("q")) {
             quitApp();
         } else {
             System.out.println("Invalid input. Please enter a valid input\n");
@@ -230,7 +230,7 @@ public class PracticeApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: filters through the song library by composer name, 
+    // EFFECTS: filters through the song library by composer name,
     // then sets the filtered song list to filteredLibrary
     public void filterByComposer() {
         System.out.println("Enter the exact name of the composer you want to filter by: ");
@@ -242,7 +242,7 @@ public class PracticeApp {
     }
 
     // MODIFIES: this
-    // EFFECTS: filters through the song library by instrument name, 
+    // EFFECTS: filters through the song library by instrument name,
     // then sets the filtered song list to filteredLibrary
     public void filterByInstrument() {
         System.out.println("Enter the exact name of the instrument you want to filter by: ");
@@ -453,7 +453,8 @@ public class PracticeApp {
     }
 
     // EFFECTS:
-    // 1. Displays the practice progress of a song by displaying the practice duration,
+    // 1. Displays the practice progress of a song by displaying the practice
+    // duration,
     // tempo, bars practiced, and mastery of all practice sessions in a given month
     // of the year
     // 2. If there are multiple practice sessions for a song in a single day, total
@@ -592,9 +593,8 @@ public class PracticeApp {
             jsonWriter.close();
             System.out.println("Saved SongLibrary" + " to " + JSON_STORE);
             if (s.equals("empty")) {
-                handleEmptyMenu();
-            }
-            else if (s.equals("view")) {
+                viewSongLibrary();
+            } else if (s.equals("view")) {
                 viewSongLibrary();
             }
         } catch (FileNotFoundException e) {
@@ -610,11 +610,9 @@ public class PracticeApp {
             System.out.println("Loaded SongLibrary" + " from " + JSON_STORE);
             if (s.equals("main")) {
                 handleMainMenu();
-            }
-            else if (s.equals("empty")) {
+            } else if (s.equals("empty")) {
                 viewSongLibrary();
-            }
-            else if (s.equals("view")) {
+            } else if (s.equals("view")) {
                 viewSongLibrary();
             }
         } catch (IOException e) {

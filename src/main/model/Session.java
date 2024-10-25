@@ -12,7 +12,7 @@ import persistence.Writable;
  * 2. A practice session consists of a tempo, starting bar number, ending bar number, 
  * overall mastery, duration, practice date, starting time, and ending time.
  */
-public class Session implements Writable{
+public class Session implements Writable {
     private int tempo;
     private int startBar;
     private int endBar;
@@ -22,7 +22,7 @@ public class Session implements Writable{
     private LocalTime starTime;
     private LocalTime endTime;
 
-    // REQUIRES: 
+    // REQUIRES:
     // 1. tempo, startBar, and endBar are integers and > 0
     // 2. endBar >= startBar
     // 3. mastery is a float and must be 0 <= mastery <= 10

@@ -14,7 +14,7 @@ import persistence.Writable;
  * 3. The song library can be filtered by composer or by instrument.
  */
 
-public class SongLibrary implements Writable{
+public class SongLibrary implements Writable {
     private List<Song> songList;
 
     // EFFECTS: constructs an empty song library with no songs inside

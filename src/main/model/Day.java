@@ -17,7 +17,7 @@ import java.time.LocalDate;
  * and average values of practice tempos and masteries of all practice sessions
  * in the session list. This is useful for displaying information for monthly progress summaries.
  */
-public class Day implements Writable{
+public class Day implements Writable {
     private List<Session> sessionList;
     private LocalDate date;
 

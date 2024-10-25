@@ -20,7 +20,7 @@ import java.time.Month;
  * logging a practice session into its corresponding day in the day list, and also returning
  * a list of days that are in a given month of the year.
  */
-public class Song implements Writable{
+public class Song implements Writable {
     private String title;
     private String composer;
     private String instrument;
