@@ -27,7 +27,7 @@ public class JsonReader {
 
     }
 
-    // EFFECTS: reads a song library from file and returns it;
+    // EFFECTS: reads a SongLibrary from file and returns it;
     // throws IOException if an error occurs reading data from file
     public SongLibrary read() throws IOException {
         String jsonData = readFile(source);
@@ -80,8 +80,9 @@ public class JsonReader {
         sl.addSong(song);
     }
 
-    public List<Session> getSessionsFromJson(JSONObject jsonObject) {
-        List<Session> sessions = new ArrayList<>();
+    // EFFECTS: parses Sessions from JSON object, adds them to sessionList and returns sessionList
+    private List<Session> getSessionsFromJson(JSONObject jsonObject) {
+        List<Session> sessionList = new ArrayList<>();
         JSONArray jsonArray = jsonObject.getJSONArray("sessions");
         for (Object json : jsonArray) {
             JSONObject nextSession = (JSONObject) json;
@@ -94,8 +95,8 @@ public class JsonReader {
             LocalTime startTime = LocalTime.parse(nextSession.getString("startTime"));
             LocalTime endTime = LocalTime.parse(nextSession.getString("endTime"));
             Session newSession = new Session(tempo, startBar, endBar, mastery, duration, date, startTime, endTime);
-            sessions.add(newSession);
+            sessionList.add(newSession);
         }
-        return sessions;
+        return sessionList;
     }
 }

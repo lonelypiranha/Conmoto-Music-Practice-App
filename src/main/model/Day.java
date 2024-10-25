@@ -89,7 +89,7 @@ public class Day implements Writable {
         return json;
     }
 
-    // EFFECTS: returns sessions in this Day as a JSON array
+    // EFFECTS: returns sessionList in this as a JSON array
     // This method is modelled on the JsonSerializationDemo
     private JSONArray sessionsToJson() {
         JSONArray jsonArray = new JSONArray();
