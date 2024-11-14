@@ -10,6 +10,7 @@ import java.awt.GridLayout;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.Box;
@@ -26,8 +27,7 @@ import model.Song;
 import model.SongLibrary;
 
 public class PracticeAppGui implements ActionListener {
-    JFrame frameOpening;
-    JFrame frameSongList;
+    JFrame frame;
     JOptionPane paneAddSong;
     JLabel labelOpening;
     ImageIcon logo;
@@ -49,13 +49,14 @@ public class PracticeAppGui implements ActionListener {
     JButton filterComposerButton;
     JButton loadButton;
     JButton saveButton;
+    JButton returnToMainButton;
     JButton quitButton;
 
     SongLibrary songlibrary;
     SongLibrary filteredLibrary;
 
     public PracticeAppGui() {
-        frameOpening = new JFrame();
+        frame = new JFrame();
         panelOpening = new JPanel();
         panelButton = new JPanel();
         panelLabel = new JPanel();
@@ -98,26 +99,26 @@ public class PracticeAppGui implements ActionListener {
         panelOpening.add(Box.createVerticalStrut(40));
         panelOpening.add(panelButton);
 
-        frameOpening.setSize(840, 840);
-        frameOpening.setTitle("Conmoto Music Practice App");
-        frameOpening.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frameOpening.setLayout(new FlowLayout());
-        frameOpening.add(panelOpening);
-        frameOpening.setVisible(true);
-        frameOpening.getContentPane().setBackground(new Color(2, 5, 98));
+        frame.setSize(840, 840);
+        frame.setTitle("Conmoto Music Practice App");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new FlowLayout());
+        frame.add(panelOpening);
+        frame.setVisible(true);
+        frame.getContentPane().setBackground(new Color(2, 5, 98));
     }
 
     public void displaySongList() {
-        frameSongList = new JFrame();
-        frameSongList.setSize(840, 840);
-        frameSongList.setTitle("Conmoto Music Practice App");
-        frameSongList.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frameSongList.setLayout(new FlowLayout());
-        frameSongList.getContentPane().setBackground(new Color(2, 5, 98));
-        frameSongList.setVisible(true);
+        frame = new JFrame();
+        frame.setSize(840, 840);
+        frame.setTitle("Conmoto Music Practice App");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new FlowLayout());
+        frame.getContentPane().setBackground(new Color(2, 5, 98));
+        frame.setVisible(true);
 
         topSongList = new JLabel();
-        topSongList.setText("Your Song List");
+        topSongList.setText("Your Song Library");
         topSongList.setHorizontalTextPosition(JLabel.CENTER);
         topSongList.setVerticalTextPosition(JLabel.BOTTOM);
         topSongList.setForeground(Color.WHITE);
@@ -228,16 +229,24 @@ public class PracticeAppGui implements ActionListener {
         songList.setLayout(new GridLayout(songlibrary.getSongList().size(), 1));
         songList.setBackground(Color.WHITE);
 
-        for (int i = 0; i < songlibrary.getSongList().size(); i++){
-            JLabel songTitle = new JLabel();
-            songTitle.setText((i + 1) + ". " + songlibrary.getSongList().get(i).getTitle());
-            songTitle.setForeground(Color.BLUE);
-            songTitle.setFont(new Font("Futura", Font.BOLD, 20));
-            // songTitle.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 5));
+        if (songlibrary.getSongList().isEmpty()) {
+            JLabel emptiness = new JLabel();
+            emptiness.setText("Your song library is empty. Add a song!");
+            emptiness.setForeground(Color.BLUE);
+            emptiness.setFont(new Font("Futura", Font.BOLD, 20));
+            songList.add(emptiness);
+        } else {
+            for (int i = 0; i < songlibrary.getSongList().size(); i++) {
+                JLabel songTitle = new JLabel();
+                songTitle.setText((i + 1) + ". " + songlibrary.getSongList().get(i).getTitle());
+                songTitle.setForeground(Color.BLUE);
+                songTitle.setFont(new Font("Futura", Font.BOLD, 20));
+                // songTitle.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 5));
 
-            // JPanel songPanel = new JPanel();
-            // songPanel.add(songTitle);
-            songList.add(songTitle);
+                // JPanel songPanel = new JPanel();
+                // songPanel.add(songTitle);
+                songList.add(songTitle);
+            }
         }
 
         allSongPanels = new JPanel();
@@ -249,7 +258,7 @@ public class PracticeAppGui implements ActionListener {
         allSongPanels.add(Box.createVerticalStrut(40));
         allSongPanels.add(songList);
 
-        frameSongList.add(allSongPanels);
+        frame.add(allSongPanels);
 
         // frameSongList.add(panelForTitle);
         // frameSongList.add(barSongList);
@@ -286,7 +295,214 @@ public class PracticeAppGui implements ActionListener {
             int tempoForSong = Integer.parseInt(tempo.getText());
             Song newSong = new Song(titleForSong, composerForSong, instrumentForSong, barForSong, tempoForSong);
             songlibrary.addSong(newSong);
-            frameSongList.setVisible(false);
+            JOptionPane.showOptionDialog(null, "Song successfully added!", "Message", JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE, null, null, null);
+            frame.setVisible(false);
+            displaySongList();
+        }
+    }
+
+    public void removeSong() {
+        paneAddSong = new JOptionPane();
+        addSongTextFields = new JPanel();
+        addSongTextFields.setLayout(new GridLayout(1, 1));
+        JTextField titleToRemove = new JTextField();
+        addSongTextFields.add(new JLabel("Enter the title of the song you'd like to remove:"));
+        addSongTextFields.add(titleToRemove);
+        int result = JOptionPane.showConfirmDialog(paneAddSong, addSongTextFields,
+                "Remove song", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+            boolean checker = false;
+            for (Song s : songlibrary.getSongList()) {
+                if (titleToRemove.getText().equals(s.getTitle())) {
+                    checker = songlibrary.removeSong(s);
+                    break;
+                }
+            }
+            if (checker) {
+                JOptionPane.showOptionDialog(null, "Song successfully removed!", "Message", JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.INFORMATION_MESSAGE, null, null, null);
+            } else {
+                JOptionPane.showOptionDialog(null, "No song with that title was found!", "Warning",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
+            }
+            frame.setVisible(false);
+            displaySongList();
+        }
+    }
+
+    public void filterComposer() {
+        paneAddSong = new JOptionPane();
+        addSongTextFields = new JPanel();
+        addSongTextFields.setLayout(new GridLayout(1, 1));
+        JTextField composerToFilter = new JTextField();
+        addSongTextFields.add(new JLabel("Enter the name of the composer you want to filter by:"));
+        addSongTextFields.add(composerToFilter);
+        int result = JOptionPane.showConfirmDialog(paneAddSong, addSongTextFields,
+                "Filter by composer", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+            List<Song> filteredList = songlibrary.filterByComposer(composerToFilter.getText());
+            if (filteredList.isEmpty()) {
+                JOptionPane.showOptionDialog(null, "There are no songs with that composer", "Warning",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
+            } else {
+                filteredLibrary.setSongList(filteredList);
+                frame.setVisible(false);
+                displayFilteredLibraryMenu("composer", " \"" + composerToFilter.getText() + "\"");
+            }
+        }
+    }
+
+    public void filterInstrument() {
+        paneAddSong = new JOptionPane();
+        addSongTextFields = new JPanel();
+        addSongTextFields.setLayout(new GridLayout(1, 1));
+        JTextField instrumentToFilter = new JTextField();
+        addSongTextFields.add(new JLabel("Enter the name of the instrument you want to filter by:"));
+        addSongTextFields.add(instrumentToFilter);
+        int result = JOptionPane.showConfirmDialog(paneAddSong, addSongTextFields,
+                "Filter by instrument", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+            List<Song> filteredList = songlibrary.filterByInstrument(instrumentToFilter.getText());
+            if (filteredList.isEmpty()) {
+                JOptionPane.showOptionDialog(null, "There are no songs with that instrument", "Warning",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
+            } else {
+                filteredLibrary.setSongList(filteredList);
+                frame.setVisible(false);
+                displayFilteredLibraryMenu("instrument", " \"" + instrumentToFilter.getText() + "\"");
+            }
+        }
+    }
+
+    public void displayFilteredLibraryMenu(String instrumentOrComposer, String name) {
+        frame = new JFrame();
+        frame.setSize(840, 840);
+        frame.setTitle("Conmoto Music Practice App");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new FlowLayout());
+        frame.getContentPane().setBackground(new Color(2, 5, 98));
+        frame.setVisible(true);
+
+        topSongList = new JLabel();
+        topSongList.setText("Your Song Library Filtered By The " + instrumentOrComposer + name);
+        topSongList.setHorizontalTextPosition(JLabel.CENTER);
+        topSongList.setVerticalTextPosition(JLabel.BOTTOM);
+        topSongList.setForeground(Color.WHITE);
+        topSongList.setFont(new Font("Futura", Font.BOLD, 30));
+        topSongList.setIconTextGap(-50);
+        topSongList.setHorizontalAlignment(JLabel.CENTER);
+        topSongList.setVerticalAlignment(JLabel.TOP);
+
+        panelForTitle = new JPanel();
+        panelForTitle.setBackground(new Color(0, 0, 0, 0));
+        panelForTitle.add(topSongList);
+
+        // removeSongButton = new JButton();
+        // removeSongButton.setText("Remove a song");
+        // removeSongButton.setSize(100, 100);
+        // removeSongButton.setHorizontalAlignment(JButton.CENTER);
+        // removeSongButton.setVerticalAlignment(JButton.CENTER);
+        // removeSongButton.addActionListener(this);
+        // removeSongButton.setFocusable(false);
+        // removeSongButton.setFont(new Font("Futura", Font.PLAIN, 20));
+        // removeSongButton.setForeground(new Color(2, 5, 98));
+
+        // detailsButton = new JButton();
+        // detailsButton.setText("See song details");
+        // detailsButton.setSize(100, 100);
+        // detailsButton.setHorizontalAlignment(JButton.CENTER);
+        // detailsButton.setVerticalAlignment(JButton.CENTER);
+        // detailsButton.addActionListener(this);
+        // detailsButton.setFocusable(false);
+        // detailsButton.setFont(new Font("Futura", Font.PLAIN, 20));
+        // detailsButton.setForeground(new Color(2, 5, 98));
+
+        returnToMainButton = new JButton();
+        returnToMainButton.setText("Return to full song library");
+        returnToMainButton.setSize(100, 100);
+        returnToMainButton.setHorizontalAlignment(JButton.CENTER);
+        returnToMainButton.setVerticalAlignment(JButton.CENTER);
+        returnToMainButton.addActionListener(this);
+        returnToMainButton.setFocusable(false);
+        returnToMainButton.setFont(new Font("Futura", Font.PLAIN, 20));
+        returnToMainButton.setForeground(new Color(2, 5, 98));
+
+        quitButton = new JButton();
+        quitButton.setText("Quit app");
+        quitButton.setSize(100, 100);
+        quitButton.setHorizontalAlignment(JButton.CENTER);
+        quitButton.setVerticalAlignment(JButton.CENTER);
+        quitButton.addActionListener(this);
+        quitButton.setFocusable(false);
+        quitButton.setFont(new Font("Futura", Font.PLAIN, 20));
+        quitButton.setForeground(new Color(2, 5, 98));
+
+        barSongList = new JPanel();
+        barSongList.setLayout(new GridLayout(1, 2));
+        barSongList.setBackground(new Color(2, 5, 98));
+        // barSongList.add(removeSongButton);
+        // barSongList.add(detailsButton);
+        barSongList.add(returnToMainButton);
+        barSongList.add(quitButton);
+
+        songList = new JPanel();
+        songList.setLayout(new GridLayout(filteredLibrary.getSongList().size(), 1));
+        songList.setBackground(Color.WHITE);
+
+        for (int i = 0; i < filteredLibrary.getSongList().size(); i++) {
+            JLabel songTitle = new JLabel();
+            songTitle.setText((i + 1) + ". " + filteredLibrary.getSongList().get(i).getTitle());
+            songTitle.setForeground(Color.BLUE);
+            songTitle.setFont(new Font("Futura", Font.BOLD, 20));
+            // songTitle.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 5));
+
+            // JPanel songPanel = new JPanel();
+            // songPanel.add(songTitle);
+            songList.add(songTitle);
+        }
+
+        allSongPanels = new JPanel();
+        allSongPanels.setLayout(new BoxLayout(allSongPanels, BoxLayout.PAGE_AXIS));
+        allSongPanels.setBackground(new Color(0, 0, 0, 0));
+        allSongPanels.add(panelForTitle);
+        allSongPanels.add(Box.createVerticalStrut(40));
+        allSongPanels.add(barSongList);
+        allSongPanels.add(Box.createVerticalStrut(40));
+        allSongPanels.add(songList);
+
+        frame.add(allSongPanels);
+
+        // frameSongList.add(panelForTitle);
+        // frameSongList.add(barSongList);
+        // frameSongList.add(songList);
+    }
+
+    public void displaySongDetails() {
+        paneAddSong = new JOptionPane();
+        addSongTextFields = new JPanel();
+        addSongTextFields.setLayout(new GridLayout(1, 1));
+        JTextField titleToRemove = new JTextField();
+        addSongTextFields.add(new JLabel("Enter the title of the song you'd like to remove:"));
+        addSongTextFields.add(titleToRemove);
+        int result = JOptionPane.showConfirmDialog(paneAddSong, addSongTextFields,
+                "Remove song", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+            boolean checker = false;
+            for (Song s : songlibrary.getSongList()) {
+                if (titleToRemove.getText().equals(s.getTitle())) {
+                    checker = songlibrary.removeSong(s);
+                    break;
+                }
+            }
+            if (checker) {
+                JOptionPane.showOptionDialog(null, "Song successfully removed!", "Message", JOptionPane.DEFAULT_OPTION,
+                        JOptionPane.INFORMATION_MESSAGE, null, null, null);
+            } else {
+                JOptionPane.showOptionDialog(null, "No song with that title was found!", "Warning",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
+            }
+            frame.setVisible(false);
             displaySongList();
         }
     }
@@ -294,10 +510,27 @@ public class PracticeAppGui implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == buttonOpening) {
-            frameOpening.setVisible(false);
+            frame.setVisible(false);
             displaySongList();
         } else if (e.getSource() == addSongButton) {
-            addSong();
+            try {
+                addSong();
+            } catch (NumberFormatException nfe) {
+                JOptionPane.showOptionDialog(null, "Number of bars and tempo must be an integer!", "Warning",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
+            }
+        } else if (e.getSource() == removeSongButton) {
+            removeSong();
+        } else if (e.getSource() == filterComposerButton) {
+            filterComposer();
+        } else if (e.getSource() == filterInstrumentButton) {
+            filterInstrument();
+        } else if (e.getSource() == returnToMainButton) {
+            frame.setVisible(false);
+            displaySongList();
+        } else if (e.getSource() == detailsButton) {
+            frame.setVisible(false);
+            displaySongDetails();
         }
     }
 
