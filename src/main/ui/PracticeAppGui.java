@@ -14,6 +14,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -43,12 +44,11 @@ public class PracticeAppGui implements ActionListener {
     JPanel panelLabel;
     JPanel textFieldsPane;
     JPanel wholePagePanel;
-    JPanel songDetailsPanel;
+    JPanel mainPanel;
 
     JLabel headerLabel;
     JPanel panelForTitle;
     JPanel buttonsPanel;
-    JPanel songList;
     JButton addSongButton;
     JButton removeSongButton;
     JButton detailsButton;
@@ -62,6 +62,7 @@ public class PracticeAppGui implements ActionListener {
     JButton monthlyProgressButton;
     JButton endPracticeButton;
     JButton fillDetailsButton;
+    JButton returnToDetailsButton;
     JButton quitButton;
 
     SongLibrary songlibrary;
@@ -130,6 +131,7 @@ public class PracticeAppGui implements ActionListener {
     }
 
     public void displaySongList() {
+        frame.setVisible(false);
         frame = new JFrame();
         frame.setSize(840, 840);
         frame.setTitle("Conmoto Music Practice App");
@@ -246,23 +248,23 @@ public class PracticeAppGui implements ActionListener {
         buttonsPanel.add(saveButton);
         buttonsPanel.add(quitButton);
 
-        songList = new JPanel();
-        songList.setLayout(new GridLayout(songlibrary.getSongList().size(), 1));
-        songList.setBackground(Color.WHITE);
+        mainPanel = new JPanel();
+        mainPanel.setLayout(new GridLayout(songlibrary.getSongList().size(), 1));
+        mainPanel.setBackground(Color.WHITE);
 
         if (songlibrary.getSongList().isEmpty()) {
             JLabel emptiness = new JLabel();
             emptiness.setText("Your song library is empty. Add a song!");
             emptiness.setForeground(Color.BLUE);
             emptiness.setFont(new Font("Futura", Font.BOLD, 20));
-            songList.add(emptiness);
+            mainPanel.add(emptiness);
         } else {
             for (int i = 0; i < songlibrary.getSongList().size(); i++) {
                 JLabel songTitle = new JLabel();
                 songTitle.setText((i + 1) + ". " + songlibrary.getSongList().get(i).getTitle());
                 songTitle.setForeground(Color.BLUE);
                 songTitle.setFont(new Font("Futura", Font.BOLD, 20));
-                songList.add(songTitle);
+                mainPanel.add(songTitle);
             }
         }
 
@@ -273,7 +275,7 @@ public class PracticeAppGui implements ActionListener {
         wholePagePanel.add(Box.createVerticalStrut(40));
         wholePagePanel.add(buttonsPanel);
         wholePagePanel.add(Box.createVerticalStrut(40));
-        wholePagePanel.add(songList);
+        wholePagePanel.add(mainPanel);
 
         frame.add(wholePagePanel);
     }
@@ -458,16 +460,16 @@ public class PracticeAppGui implements ActionListener {
         buttonsPanel.add(returnToMainButton);
         buttonsPanel.add(quitButton);
 
-        songList = new JPanel();
-        songList.setLayout(new GridLayout(filteredLibrary.getSongList().size(), 1));
-        songList.setBackground(Color.WHITE);
+        mainPanel = new JPanel();
+        mainPanel.setLayout(new GridLayout(filteredLibrary.getSongList().size(), 1));
+        mainPanel.setBackground(Color.WHITE);
 
         for (int i = 0; i < filteredLibrary.getSongList().size(); i++) {
             JLabel songTitle = new JLabel();
             songTitle.setText((i + 1) + ". " + filteredLibrary.getSongList().get(i).getTitle());
             songTitle.setForeground(Color.BLUE);
             songTitle.setFont(new Font("Futura", Font.BOLD, 20));
-            songList.add(songTitle);
+            mainPanel.add(songTitle);
         }
 
         wholePagePanel = new JPanel();
@@ -477,7 +479,7 @@ public class PracticeAppGui implements ActionListener {
         wholePagePanel.add(Box.createVerticalStrut(40));
         wholePagePanel.add(buttonsPanel);
         wholePagePanel.add(Box.createVerticalStrut(40));
-        wholePagePanel.add(songList);
+        wholePagePanel.add(mainPanel);
 
         frame.add(wholePagePanel);
     }
@@ -496,7 +498,6 @@ public class PracticeAppGui implements ActionListener {
             for (Song song1 : songlibrary.getSongList()) {
                 if (titleToView.getText().equals(song1.getTitle())) {
                     checker = true;
-                    frame.setVisible(false);
                     this.currentSong = song1;
                     displaySongDetails();
                     break;
@@ -511,6 +512,7 @@ public class PracticeAppGui implements ActionListener {
     }
 
     public void displaySongDetails() {
+        frame.setVisible(false);
         frame = new JFrame();
         frame.setSize(840, 840);
         frame.setTitle("Conmoto Music Practice App");
@@ -592,9 +594,9 @@ public class PracticeAppGui implements ActionListener {
         buttonsPanel.add(practiceHistoryButton);
         buttonsPanel.add(practiceButton);
 
-        songDetailsPanel = new JPanel();
-        songDetailsPanel.setLayout(new GridLayout(5, 1));
-        songDetailsPanel.setBackground(Color.WHITE);
+        mainPanel = new JPanel();
+        mainPanel.setLayout(new GridLayout(5, 1));
+        mainPanel.setBackground(Color.WHITE);
 
         JLabel titleDisplay = new JLabel();
         titleDisplay.setText("Title: " + currentSong.getTitle());
@@ -602,7 +604,7 @@ public class PracticeAppGui implements ActionListener {
         titleDisplay.setFont(new Font("Futura", Font.BOLD, 20));
         JPanel titPanel = new JPanel();
         titPanel.add(titleDisplay);
-        songDetailsPanel.add(titPanel);
+        mainPanel.add(titPanel);
 
         JLabel composerDisplay = new JLabel();
         composerDisplay.setText("Composer: " + currentSong.getComposer());
@@ -610,7 +612,7 @@ public class PracticeAppGui implements ActionListener {
         composerDisplay.setFont(new Font("Futura", Font.BOLD, 20));
         JPanel composerPanel = new JPanel();
         composerPanel.add(composerDisplay);
-        songDetailsPanel.add(composerPanel);
+        mainPanel.add(composerPanel);
 
         JLabel instrumentDisplay = new JLabel();
         instrumentDisplay.setText("Instrument: " + currentSong.getInstrument());
@@ -618,7 +620,7 @@ public class PracticeAppGui implements ActionListener {
         instrumentDisplay.setFont(new Font("Futura", Font.BOLD, 20));
         JPanel instrumentPanel = new JPanel();
         instrumentPanel.add(instrumentDisplay);
-        songDetailsPanel.add(instrumentPanel);
+        mainPanel.add(instrumentPanel);
 
         JLabel barDisplay = new JLabel();
         barDisplay.setText("Number of bars: " + currentSong.getBarNumber());
@@ -626,7 +628,7 @@ public class PracticeAppGui implements ActionListener {
         barDisplay.setFont(new Font("Futura", Font.BOLD, 20));
         JPanel barPanel = new JPanel();
         barPanel.add(barDisplay);
-        songDetailsPanel.add(barPanel);
+        mainPanel.add(barPanel);
 
         JLabel tempoDisplay = new JLabel();
         tempoDisplay.setText("Tempo: " + currentSong.getTargetTempo());
@@ -634,7 +636,7 @@ public class PracticeAppGui implements ActionListener {
         tempoDisplay.setFont(new Font("Futura", Font.BOLD, 20));
         JPanel tempoPanel = new JPanel();
         tempoPanel.add(tempoDisplay);
-        songDetailsPanel.add(tempoPanel);
+        mainPanel.add(tempoPanel);
 
         wholePagePanel = new JPanel();
         wholePagePanel.setLayout(new BoxLayout(wholePagePanel, BoxLayout.PAGE_AXIS));
@@ -643,7 +645,7 @@ public class PracticeAppGui implements ActionListener {
         wholePagePanel.add(Box.createVerticalStrut(40));
         wholePagePanel.add(buttonsPanel);
         wholePagePanel.add(Box.createVerticalStrut(40));
-        wholePagePanel.add(songDetailsPanel);
+        wholePagePanel.add(mainPanel);
 
         frame.add(wholePagePanel);
     }
@@ -829,10 +831,140 @@ public class PracticeAppGui implements ActionListener {
                     JOptionPane.DEFAULT_OPTION,
                     JOptionPane.INFORMATION_MESSAGE, null, null, null);
             if (result2 == JOptionPane.OK_OPTION) {
+                frame.setVisible(false);
                 displaySongDetails();
             }
 
         }
+    }
+
+    public void displayPracticeHistory() {
+        frame.setVisible(false);
+        frame = new JFrame();
+        frame.setSize(840, 840);
+        frame.setTitle("Conmoto Music Practice App");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new FlowLayout());
+        frame.getContentPane().setBackground(new Color(2, 5, 98));
+        frame.setVisible(true);
+
+        headerLabel = new JLabel();
+        headerLabel.setText("Practice history for " + currentSong.getTitle());
+        headerLabel.setHorizontalTextPosition(JLabel.CENTER);
+        headerLabel.setVerticalTextPosition(JLabel.BOTTOM);
+        headerLabel.setForeground(Color.WHITE);
+        headerLabel.setFont(new Font("Futura", Font.BOLD, 30));
+        headerLabel.setIconTextGap(-50);
+        headerLabel.setHorizontalAlignment(JLabel.CENTER);
+        headerLabel.setVerticalAlignment(JLabel.TOP);
+
+        panelForTitle = new JPanel();
+        panelForTitle.setBackground(new Color(0, 0, 0, 0));
+        panelForTitle.add(headerLabel);
+
+        returnToDetailsButton = new JButton();
+        returnToDetailsButton.setText("Return to song details page");
+        returnToDetailsButton.setSize(100, 100);
+        returnToDetailsButton.setHorizontalAlignment(JButton.CENTER);
+        returnToDetailsButton.setVerticalAlignment(JButton.CENTER);
+        returnToDetailsButton.addActionListener(this);
+        returnToDetailsButton.setFocusable(false);
+        returnToDetailsButton.setFont(new Font("Futura", Font.PLAIN, 20));
+        returnToDetailsButton.setForeground(new Color(2, 5, 98));
+
+        quitButton = new JButton();
+        quitButton.setText("Quit app");
+        quitButton.setSize(100, 100);
+        quitButton.setHorizontalAlignment(JButton.CENTER);
+        quitButton.setVerticalAlignment(JButton.CENTER);
+        quitButton.addActionListener(this);
+        quitButton.setFocusable(false);
+        quitButton.setFont(new Font("Futura", Font.PLAIN, 20));
+        quitButton.setForeground(new Color(2, 5, 98));
+
+        buttonsPanel = new JPanel();
+        buttonsPanel.setLayout(new GridLayout(1, 2));
+        buttonsPanel.setBackground(new Color(2, 5, 98));
+        buttonsPanel.add(returnToDetailsButton);
+        buttonsPanel.add(quitButton);
+
+        // songList = new JPanel();
+        // songList.setLayout(new GridLayout(songlibrary.getSongList().size(), 1));
+        // songList.setBackground(Color.WHITE);
+
+        wholePagePanel = new JPanel();
+        wholePagePanel.setLayout(new BoxLayout(wholePagePanel, BoxLayout.PAGE_AXIS));
+        wholePagePanel.setBackground(new Color(0, 0, 0, 0));
+        wholePagePanel.add(panelForTitle);
+        wholePagePanel.add(Box.createVerticalStrut(40));
+        wholePagePanel.add(buttonsPanel);
+        wholePagePanel.add(Box.createVerticalStrut(40));
+
+        if (currentSong.getSessions().isEmpty()) {
+            mainPanel = new JPanel();
+            mainPanel.setLayout(new GridLayout(songlibrary.getSongList().size(), 1));
+            mainPanel.setBackground(Color.WHITE);
+            JLabel emptiness = new JLabel();
+            emptiness.setText("No practice sessions found.");
+            emptiness.setForeground(Color.BLUE);
+            emptiness.setFont(new Font("Futura", Font.BOLD, 20));
+            mainPanel.add(emptiness);
+            wholePagePanel.add(mainPanel);
+        } else {
+            for (int i = 0; i < currentSong.getSessions().size(); i++) {
+                Session session = currentSong.getSessions().get(i);
+                String formattedDate = formatDate(session.getPracticeDate());
+                String formattedStartTime = formatTime(session.getStartTime());
+                String formattedEndTime = formatTime(session.getEndTime());
+                float finalDuration = convertDurationToMinutes(session.getDuration());
+
+                mainPanel = new JPanel();
+                mainPanel.setLayout(new GridLayout(5, 1));
+                if (i % 2 == 0) {
+                mainPanel.setBackground(Color.WHITE);
+                }
+                else {
+                    mainPanel.setBackground(new Color(139, 232, 203));
+                }
+
+                JLabel date = new JLabel();
+                date.setText(formattedDate + " " + formattedStartTime + "-" + formattedEndTime);
+                date.setForeground(Color.BLUE);
+                date.setFont(new Font("Futura", Font.BOLD, 20));
+                mainPanel.add(date);
+
+                JLabel tempo = new JLabel();
+                tempo.setText("Tempo: " + session.getTempo());
+                tempo.setForeground(Color.BLUE);
+                tempo.setFont(new Font("Futura", Font.BOLD, 20));
+                mainPanel.add(tempo);
+
+                JLabel bars = new JLabel();
+                bars.setText("Bars practiced: " + session.getStartBar() + "-" + session.getEndBar());
+                bars.setForeground(Color.BLUE);
+                bars.setFont(new Font("Futura", Font.BOLD, 20));
+                mainPanel.add(bars);
+
+                JLabel mastery = new JLabel();
+                mastery.setText("Overall mastery: " + session.getOverallMastery());
+                mastery.setForeground(Color.BLUE);
+                mastery.setFont(new Font("Futura", Font.BOLD, 20));
+                mainPanel.add(mastery);
+
+                JLabel duration = new JLabel();
+                duration.setText("Duration: " + finalDuration + " minutes");
+                duration.setForeground(Color.BLUE);
+                duration.setFont(new Font("Futura", Font.BOLD, 20));
+                mainPanel.add(duration);
+                wholePagePanel.add(mainPanel);
+            }
+        }
+
+        frame.add(wholePagePanel);
+    }
+
+    public void monthlyProgressOptionPanel() {
+
     }
 
     @Override
@@ -854,14 +986,15 @@ public class PracticeAppGui implements ActionListener {
         } else if (e.getSource() == filterInstrumentButton) {
             filterInstrument();
         } else if (e.getSource() == returnToMainButton) {
-            frame.setVisible(false);
             displaySongList();
         } else if (e.getSource() == detailsButton) {
             songDetailsOptionPane();
-        } else if (e.getSource() == monthlyProgressButton) {
-
+        } else if (e.getSource() == returnToDetailsButton) {
+            displaySongDetails();
+        }else if (e.getSource() == monthlyProgressButton) {
+            monthlyProgressOptionPanel();
         } else if (e.getSource() == practiceHistoryButton) {
-
+            displayPracticeHistory();
         } else if (e.getSource() == practiceButton) {
             practiceOptionPane();
         } else if (e.getSource() == endPracticeButton) {
@@ -886,6 +1019,22 @@ public class PracticeAppGui implements ActionListener {
         String durationMinutesStringTruncated = durationMinutesString.substring(0, 4);
         float finalDuration = Float.parseFloat(durationMinutesStringTruncated);
         return finalDuration;
+    }
+
+    // EFFECTS: formats the date into the given pattern, then returns the formatted
+    // date as a String
+    public String formatDate(LocalDate date) {
+        DateTimeFormatter formatPatternDate = DateTimeFormatter.ofPattern("E, MMM dd yyyy");
+        String formattedDate = date.format(formatPatternDate);
+        return formattedDate;
+    }
+
+    // EFFECTS: formats the time into the given pattern, then returns the formatted
+    // time as a String
+    public String formatTime(LocalTime time) {
+        DateTimeFormatter formatPatternTime = DateTimeFormatter.ofPattern("HH:mm:ss");
+        String formattedTime = time.format(formatPatternTime);
+        return formattedTime;
     }
 
 }
