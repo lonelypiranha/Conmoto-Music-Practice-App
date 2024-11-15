@@ -4,12 +4,16 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -23,26 +27,27 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import model.Session;
 import model.Song;
 import model.SongLibrary;
 
 public class PracticeAppGui implements ActionListener {
     JFrame frame;
-    JOptionPane paneAddSong;
+    JOptionPane optionPane;
     JLabel labelOpening;
     ImageIcon logo;
+    ImageIcon practicing;
     JButton buttonOpening;
     JPanel panelOpening;
     JPanel panelButton;
     JPanel panelLabel;
-    JPanel addSongTextFields;
-    JPanel allSongPanels;
+    JPanel textFieldsPane;
+    JPanel wholePagePanel;
     JPanel songDetailsPanel;
-    JPanel allDetailsPanel;
 
-    JLabel topSongList;
+    JLabel headerLabel;
     JPanel panelForTitle;
-    JPanel barSongList;
+    JPanel buttonsPanel;
     JPanel songList;
     JButton addSongButton;
     JButton removeSongButton;
@@ -52,10 +57,23 @@ public class PracticeAppGui implements ActionListener {
     JButton loadButton;
     JButton saveButton;
     JButton returnToMainButton;
+    JButton practiceButton;
+    JButton practiceHistoryButton;
+    JButton monthlyProgressButton;
+    JButton endPracticeButton;
+    JButton fillDetailsButton;
     JButton quitButton;
 
     SongLibrary songlibrary;
     SongLibrary filteredLibrary;
+
+    Song currentSong;
+    long currentInitialTime;
+    LocalDate currentDate;
+    LocalTime currentStartTime;
+    LocalTime currentEndTime;
+    long currentElapsedTime;
+    float currentFinalElapsedMinutes;
 
     public PracticeAppGui() {
         frame = new JFrame();
@@ -63,6 +81,7 @@ public class PracticeAppGui implements ActionListener {
         panelButton = new JPanel();
         panelLabel = new JPanel();
         logo = new ImageIcon("src/main/ui/on-2.png");
+        practicing = new ImageIcon("src/main/ui/practicing2.png");
         songlibrary = new SongLibrary();
         filteredLibrary = new SongLibrary();
 
@@ -119,19 +138,19 @@ public class PracticeAppGui implements ActionListener {
         frame.getContentPane().setBackground(new Color(2, 5, 98));
         frame.setVisible(true);
 
-        topSongList = new JLabel();
-        topSongList.setText("Your Song Library");
-        topSongList.setHorizontalTextPosition(JLabel.CENTER);
-        topSongList.setVerticalTextPosition(JLabel.BOTTOM);
-        topSongList.setForeground(Color.WHITE);
-        topSongList.setFont(new Font("Futura", Font.BOLD, 30));
-        topSongList.setIconTextGap(-50);
-        topSongList.setHorizontalAlignment(JLabel.CENTER);
-        topSongList.setVerticalAlignment(JLabel.TOP);
+        headerLabel = new JLabel();
+        headerLabel.setText("Your Song Library");
+        headerLabel.setHorizontalTextPosition(JLabel.CENTER);
+        headerLabel.setVerticalTextPosition(JLabel.BOTTOM);
+        headerLabel.setForeground(Color.WHITE);
+        headerLabel.setFont(new Font("Futura", Font.BOLD, 30));
+        headerLabel.setIconTextGap(-50);
+        headerLabel.setHorizontalAlignment(JLabel.CENTER);
+        headerLabel.setVerticalAlignment(JLabel.TOP);
 
         panelForTitle = new JPanel();
         panelForTitle.setBackground(new Color(0, 0, 0, 0));
-        panelForTitle.add(topSongList);
+        panelForTitle.add(headerLabel);
 
         addSongButton = new JButton();
         addSongButton.setText("Add a song");
@@ -215,17 +234,17 @@ public class PracticeAppGui implements ActionListener {
         quitButton.setFont(new Font("Futura", Font.PLAIN, 20));
         quitButton.setForeground(new Color(2, 5, 98));
 
-        barSongList = new JPanel();
-        barSongList.setLayout(new GridLayout(4, 3));
-        barSongList.setBackground(new Color(2, 5, 98));
-        barSongList.add(addSongButton);
-        barSongList.add(removeSongButton);
-        barSongList.add(detailsButton);
-        barSongList.add(filterComposerButton);
-        barSongList.add(filterInstrumentButton);
-        barSongList.add(loadButton);
-        barSongList.add(saveButton);
-        barSongList.add(quitButton);
+        buttonsPanel = new JPanel();
+        buttonsPanel.setLayout(new GridLayout(4, 3));
+        buttonsPanel.setBackground(new Color(2, 5, 98));
+        buttonsPanel.add(addSongButton);
+        buttonsPanel.add(removeSongButton);
+        buttonsPanel.add(detailsButton);
+        buttonsPanel.add(filterComposerButton);
+        buttonsPanel.add(filterInstrumentButton);
+        buttonsPanel.add(loadButton);
+        buttonsPanel.add(saveButton);
+        buttonsPanel.add(quitButton);
 
         songList = new JPanel();
         songList.setLayout(new GridLayout(songlibrary.getSongList().size(), 1));
@@ -243,51 +262,42 @@ public class PracticeAppGui implements ActionListener {
                 songTitle.setText((i + 1) + ". " + songlibrary.getSongList().get(i).getTitle());
                 songTitle.setForeground(Color.BLUE);
                 songTitle.setFont(new Font("Futura", Font.BOLD, 20));
-                // songTitle.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 5));
-
-                // JPanel songPanel = new JPanel();
-                // songPanel.add(songTitle);
                 songList.add(songTitle);
             }
         }
 
-        allSongPanels = new JPanel();
-        allSongPanels.setLayout(new BoxLayout(allSongPanels, BoxLayout.PAGE_AXIS));
-        allSongPanels.setBackground(new Color(0, 0, 0, 0));
-        allSongPanels.add(panelForTitle);
-        allSongPanels.add(Box.createVerticalStrut(40));
-        allSongPanels.add(barSongList);
-        allSongPanels.add(Box.createVerticalStrut(40));
-        allSongPanels.add(songList);
+        wholePagePanel = new JPanel();
+        wholePagePanel.setLayout(new BoxLayout(wholePagePanel, BoxLayout.PAGE_AXIS));
+        wholePagePanel.setBackground(new Color(0, 0, 0, 0));
+        wholePagePanel.add(panelForTitle);
+        wholePagePanel.add(Box.createVerticalStrut(40));
+        wholePagePanel.add(buttonsPanel);
+        wholePagePanel.add(Box.createVerticalStrut(40));
+        wholePagePanel.add(songList);
 
-        frame.add(allSongPanels);
-
-        // frameSongList.add(panelForTitle);
-        // frameSongList.add(barSongList);
-        // frameSongList.add(songList);
-
+        frame.add(wholePagePanel);
     }
 
     public void addSong() {
-        paneAddSong = new JOptionPane();
-        addSongTextFields = new JPanel();
-        addSongTextFields.setLayout(new GridLayout(5, 1));
+        optionPane = new JOptionPane();
+        textFieldsPane = new JPanel();
+        textFieldsPane.setLayout(new GridLayout(5, 1));
         JTextField title = new JTextField();
         JTextField composer = new JTextField();
         JTextField instrument = new JTextField();
         JTextField barCount = new JTextField();
         JTextField tempo = new JTextField();
-        addSongTextFields.add(new JLabel("Title:"));
-        addSongTextFields.add(title);
-        addSongTextFields.add(new JLabel("Composer:"));
-        addSongTextFields.add(composer);
-        addSongTextFields.add(new JLabel("Instrument:"));
-        addSongTextFields.add(instrument);
-        addSongTextFields.add(new JLabel("Number of bars:"));
-        addSongTextFields.add(barCount);
-        addSongTextFields.add(new JLabel("Tempo:"));
-        addSongTextFields.add(tempo);
-        int result = JOptionPane.showConfirmDialog(paneAddSong, addSongTextFields,
+        textFieldsPane.add(new JLabel("Title:"));
+        textFieldsPane.add(title);
+        textFieldsPane.add(new JLabel("Composer:"));
+        textFieldsPane.add(composer);
+        textFieldsPane.add(new JLabel("Instrument:"));
+        textFieldsPane.add(instrument);
+        textFieldsPane.add(new JLabel("Number of bars:"));
+        textFieldsPane.add(barCount);
+        textFieldsPane.add(new JLabel("Tempo:"));
+        textFieldsPane.add(tempo);
+        int result = JOptionPane.showConfirmDialog(optionPane, textFieldsPane,
                 "Please enter song details", JOptionPane.OK_CANCEL_OPTION);
         if (result == JOptionPane.OK_OPTION) {
             String titleForSong = title.getText();
@@ -305,13 +315,13 @@ public class PracticeAppGui implements ActionListener {
     }
 
     public void removeSong() {
-        paneAddSong = new JOptionPane();
-        addSongTextFields = new JPanel();
-        addSongTextFields.setLayout(new GridLayout(1, 1));
+        optionPane = new JOptionPane();
+        textFieldsPane = new JPanel();
+        textFieldsPane.setLayout(new GridLayout(1, 1));
         JTextField titleToRemove = new JTextField();
-        addSongTextFields.add(new JLabel("Enter the title of the song you'd like to remove:"));
-        addSongTextFields.add(titleToRemove);
-        int result = JOptionPane.showConfirmDialog(paneAddSong, addSongTextFields,
+        textFieldsPane.add(new JLabel("Enter the title of the song you'd like to remove:"));
+        textFieldsPane.add(titleToRemove);
+        int result = JOptionPane.showConfirmDialog(optionPane, textFieldsPane,
                 "Remove song", JOptionPane.OK_CANCEL_OPTION);
         if (result == JOptionPane.OK_OPTION) {
             boolean checker = false;
@@ -334,13 +344,13 @@ public class PracticeAppGui implements ActionListener {
     }
 
     public void filterComposer() {
-        paneAddSong = new JOptionPane();
-        addSongTextFields = new JPanel();
-        addSongTextFields.setLayout(new GridLayout(1, 1));
+        optionPane = new JOptionPane();
+        textFieldsPane = new JPanel();
+        textFieldsPane.setLayout(new GridLayout(1, 1));
         JTextField composerToFilter = new JTextField();
-        addSongTextFields.add(new JLabel("Enter the name of the composer you want to filter by:"));
-        addSongTextFields.add(composerToFilter);
-        int result = JOptionPane.showConfirmDialog(paneAddSong, addSongTextFields,
+        textFieldsPane.add(new JLabel("Enter the name of the composer you want to filter by:"));
+        textFieldsPane.add(composerToFilter);
+        int result = JOptionPane.showConfirmDialog(optionPane, textFieldsPane,
                 "Filter by composer", JOptionPane.OK_CANCEL_OPTION);
         if (result == JOptionPane.OK_OPTION) {
             List<Song> filteredList = songlibrary.filterByComposer(composerToFilter.getText());
@@ -356,13 +366,13 @@ public class PracticeAppGui implements ActionListener {
     }
 
     public void filterInstrument() {
-        paneAddSong = new JOptionPane();
-        addSongTextFields = new JPanel();
-        addSongTextFields.setLayout(new GridLayout(1, 1));
+        optionPane = new JOptionPane();
+        textFieldsPane = new JPanel();
+        textFieldsPane.setLayout(new GridLayout(1, 1));
         JTextField instrumentToFilter = new JTextField();
-        addSongTextFields.add(new JLabel("Enter the name of the instrument you want to filter by:"));
-        addSongTextFields.add(instrumentToFilter);
-        int result = JOptionPane.showConfirmDialog(paneAddSong, addSongTextFields,
+        textFieldsPane.add(new JLabel("Enter the name of the instrument you want to filter by:"));
+        textFieldsPane.add(instrumentToFilter);
+        int result = JOptionPane.showConfirmDialog(optionPane, textFieldsPane,
                 "Filter by instrument", JOptionPane.OK_CANCEL_OPTION);
         if (result == JOptionPane.OK_OPTION) {
             List<Song> filteredList = songlibrary.filterByInstrument(instrumentToFilter.getText());
@@ -386,19 +396,19 @@ public class PracticeAppGui implements ActionListener {
         frame.getContentPane().setBackground(new Color(2, 5, 98));
         frame.setVisible(true);
 
-        topSongList = new JLabel();
-        topSongList.setText("Your Song Library Filtered By The " + instrumentOrComposer + name);
-        topSongList.setHorizontalTextPosition(JLabel.CENTER);
-        topSongList.setVerticalTextPosition(JLabel.BOTTOM);
-        topSongList.setForeground(Color.WHITE);
-        topSongList.setFont(new Font("Futura", Font.BOLD, 30));
-        topSongList.setIconTextGap(-50);
-        topSongList.setHorizontalAlignment(JLabel.CENTER);
-        topSongList.setVerticalAlignment(JLabel.TOP);
+        headerLabel = new JLabel();
+        headerLabel.setText("Your Song Library Filtered By The " + instrumentOrComposer + name);
+        headerLabel.setHorizontalTextPosition(JLabel.CENTER);
+        headerLabel.setVerticalTextPosition(JLabel.BOTTOM);
+        headerLabel.setForeground(Color.WHITE);
+        headerLabel.setFont(new Font("Futura", Font.BOLD, 30));
+        headerLabel.setIconTextGap(-50);
+        headerLabel.setHorizontalAlignment(JLabel.CENTER);
+        headerLabel.setVerticalAlignment(JLabel.TOP);
 
         panelForTitle = new JPanel();
         panelForTitle.setBackground(new Color(0, 0, 0, 0));
-        panelForTitle.add(topSongList);
+        panelForTitle.add(headerLabel);
 
         // removeSongButton = new JButton();
         // removeSongButton.setText("Remove a song");
@@ -440,13 +450,13 @@ public class PracticeAppGui implements ActionListener {
         quitButton.setFont(new Font("Futura", Font.PLAIN, 20));
         quitButton.setForeground(new Color(2, 5, 98));
 
-        barSongList = new JPanel();
-        barSongList.setLayout(new GridLayout(1, 2));
-        barSongList.setBackground(new Color(2, 5, 98));
+        buttonsPanel = new JPanel();
+        buttonsPanel.setLayout(new GridLayout(1, 2));
+        buttonsPanel.setBackground(new Color(2, 5, 98));
         // barSongList.add(removeSongButton);
         // barSongList.add(detailsButton);
-        barSongList.add(returnToMainButton);
-        barSongList.add(quitButton);
+        buttonsPanel.add(returnToMainButton);
+        buttonsPanel.add(quitButton);
 
         songList = new JPanel();
         songList.setLayout(new GridLayout(filteredLibrary.getSongList().size(), 1));
@@ -457,37 +467,29 @@ public class PracticeAppGui implements ActionListener {
             songTitle.setText((i + 1) + ". " + filteredLibrary.getSongList().get(i).getTitle());
             songTitle.setForeground(Color.BLUE);
             songTitle.setFont(new Font("Futura", Font.BOLD, 20));
-            // songTitle.setBorder(BorderFactory.createLineBorder(Color.YELLOW, 5));
-
-            // JPanel songPanel = new JPanel();
-            // songPanel.add(songTitle);
             songList.add(songTitle);
         }
 
-        allSongPanels = new JPanel();
-        allSongPanels.setLayout(new BoxLayout(allSongPanels, BoxLayout.PAGE_AXIS));
-        allSongPanels.setBackground(new Color(0, 0, 0, 0));
-        allSongPanels.add(panelForTitle);
-        allSongPanels.add(Box.createVerticalStrut(40));
-        allSongPanels.add(barSongList);
-        allSongPanels.add(Box.createVerticalStrut(40));
-        allSongPanels.add(songList);
+        wholePagePanel = new JPanel();
+        wholePagePanel.setLayout(new BoxLayout(wholePagePanel, BoxLayout.PAGE_AXIS));
+        wholePagePanel.setBackground(new Color(0, 0, 0, 0));
+        wholePagePanel.add(panelForTitle);
+        wholePagePanel.add(Box.createVerticalStrut(40));
+        wholePagePanel.add(buttonsPanel);
+        wholePagePanel.add(Box.createVerticalStrut(40));
+        wholePagePanel.add(songList);
 
-        frame.add(allSongPanels);
-
-        // frameSongList.add(panelForTitle);
-        // frameSongList.add(barSongList);
-        // frameSongList.add(songList);
+        frame.add(wholePagePanel);
     }
 
     public void songDetailsOptionPane() {
-        paneAddSong = new JOptionPane();
-        addSongTextFields = new JPanel();
-        addSongTextFields.setLayout(new GridLayout(1, 1));
+        optionPane = new JOptionPane();
+        textFieldsPane = new JPanel();
+        textFieldsPane.setLayout(new GridLayout(1, 1));
         JTextField titleToView = new JTextField();
-        addSongTextFields.add(new JLabel("Enter the title of the song whose details you want to view: "));
-        addSongTextFields.add(titleToView);
-        int result = JOptionPane.showConfirmDialog(paneAddSong, addSongTextFields,
+        textFieldsPane.add(new JLabel("Enter the title of the song whose details you want to view: "));
+        textFieldsPane.add(titleToView);
+        int result = JOptionPane.showConfirmDialog(optionPane, textFieldsPane,
                 "View song details", JOptionPane.OK_CANCEL_OPTION);
         if (result == JOptionPane.OK_OPTION) {
             boolean checker = false;
@@ -495,7 +497,8 @@ public class PracticeAppGui implements ActionListener {
                 if (titleToView.getText().equals(song1.getTitle())) {
                     checker = true;
                     frame.setVisible(false);
-                    displaySongDetails(song1);
+                    this.currentSong = song1;
+                    displaySongDetails();
                     break;
                 }
             }
@@ -507,7 +510,7 @@ public class PracticeAppGui implements ActionListener {
         }
     }
 
-    public void displaySongDetails(Song song) {
+    public void displaySongDetails() {
         frame = new JFrame();
         frame.setSize(840, 840);
         frame.setTitle("Conmoto Music Practice App");
@@ -516,19 +519,19 @@ public class PracticeAppGui implements ActionListener {
         frame.getContentPane().setBackground(new Color(2, 5, 98));
         frame.setVisible(true);
 
-        topSongList = new JLabel();
-        topSongList.setText(song.getTitle());
-        topSongList.setHorizontalTextPosition(JLabel.CENTER);
-        topSongList.setVerticalTextPosition(JLabel.BOTTOM);
-        topSongList.setForeground(Color.WHITE);
-        topSongList.setFont(new Font("Futura", Font.BOLD, 30));
-        topSongList.setIconTextGap(-50);
-        topSongList.setHorizontalAlignment(JLabel.CENTER);
-        topSongList.setVerticalAlignment(JLabel.TOP);
+        headerLabel = new JLabel();
+        headerLabel.setText(currentSong.getTitle());
+        headerLabel.setHorizontalTextPosition(JLabel.CENTER);
+        headerLabel.setVerticalTextPosition(JLabel.BOTTOM);
+        headerLabel.setForeground(Color.WHITE);
+        headerLabel.setFont(new Font("Futura", Font.BOLD, 30));
+        headerLabel.setIconTextGap(-50);
+        headerLabel.setHorizontalAlignment(JLabel.CENTER);
+        headerLabel.setVerticalAlignment(JLabel.TOP);
 
         panelForTitle = new JPanel();
         panelForTitle.setBackground(new Color(0, 0, 0, 0));
-        panelForTitle.add(topSongList);
+        panelForTitle.add(headerLabel);
 
         returnToMainButton = new JButton();
         returnToMainButton.setText("Return to full song library");
@@ -550,18 +553,51 @@ public class PracticeAppGui implements ActionListener {
         quitButton.setFont(new Font("Futura", Font.PLAIN, 20));
         quitButton.setForeground(new Color(2, 5, 98));
 
-        barSongList = new JPanel();
-        barSongList.setLayout(new GridLayout(1, 2));
-        barSongList.setBackground(new Color(2, 5, 98));
-        barSongList.add(returnToMainButton);
-        barSongList.add(quitButton);
+        monthlyProgressButton = new JButton();
+        monthlyProgressButton.setText("View monthly progress");
+        monthlyProgressButton.setSize(100, 100);
+        monthlyProgressButton.setHorizontalAlignment(JButton.CENTER);
+        monthlyProgressButton.setVerticalAlignment(JButton.CENTER);
+        monthlyProgressButton.addActionListener(this);
+        monthlyProgressButton.setFocusable(false);
+        monthlyProgressButton.setFont(new Font("Futura", Font.PLAIN, 20));
+        monthlyProgressButton.setForeground(new Color(2, 5, 98));
+
+        practiceHistoryButton = new JButton();
+        practiceHistoryButton.setText("View practice history");
+        practiceHistoryButton.setSize(100, 100);
+        practiceHistoryButton.setHorizontalAlignment(JButton.CENTER);
+        practiceHistoryButton.setVerticalAlignment(JButton.CENTER);
+        practiceHistoryButton.addActionListener(this);
+        practiceHistoryButton.setFocusable(false);
+        practiceHistoryButton.setFont(new Font("Futura", Font.PLAIN, 20));
+        practiceHistoryButton.setForeground(new Color(2, 5, 98));
+
+        practiceButton = new JButton();
+        practiceButton.setText("Practice song");
+        practiceButton.setSize(100, 100);
+        practiceButton.setHorizontalAlignment(JButton.CENTER);
+        practiceButton.setVerticalAlignment(JButton.CENTER);
+        practiceButton.addActionListener(this);
+        practiceButton.setFocusable(false);
+        practiceButton.setFont(new Font("Futura", Font.PLAIN, 20));
+        practiceButton.setForeground(new Color(2, 5, 98));
+
+        buttonsPanel = new JPanel();
+        buttonsPanel.setLayout(new GridLayout(1, 2));
+        buttonsPanel.setBackground(new Color(2, 5, 98));
+        buttonsPanel.add(returnToMainButton);
+        buttonsPanel.add(quitButton);
+        buttonsPanel.add(monthlyProgressButton);
+        buttonsPanel.add(practiceHistoryButton);
+        buttonsPanel.add(practiceButton);
 
         songDetailsPanel = new JPanel();
         songDetailsPanel.setLayout(new GridLayout(5, 1));
         songDetailsPanel.setBackground(Color.WHITE);
 
         JLabel titleDisplay = new JLabel();
-        titleDisplay.setText("Title: " + song.getTitle());
+        titleDisplay.setText("Title: " + currentSong.getTitle());
         titleDisplay.setForeground(Color.BLUE);
         titleDisplay.setFont(new Font("Futura", Font.BOLD, 20));
         JPanel titPanel = new JPanel();
@@ -569,7 +605,7 @@ public class PracticeAppGui implements ActionListener {
         songDetailsPanel.add(titPanel);
 
         JLabel composerDisplay = new JLabel();
-        composerDisplay.setText("Composer: " + song.getComposer());
+        composerDisplay.setText("Composer: " + currentSong.getComposer());
         composerDisplay.setForeground(Color.BLUE);
         composerDisplay.setFont(new Font("Futura", Font.BOLD, 20));
         JPanel composerPanel = new JPanel();
@@ -577,7 +613,7 @@ public class PracticeAppGui implements ActionListener {
         songDetailsPanel.add(composerPanel);
 
         JLabel instrumentDisplay = new JLabel();
-        instrumentDisplay.setText("Instrument: " + song.getInstrument());
+        instrumentDisplay.setText("Instrument: " + currentSong.getInstrument());
         instrumentDisplay.setForeground(Color.BLUE);
         instrumentDisplay.setFont(new Font("Futura", Font.BOLD, 20));
         JPanel instrumentPanel = new JPanel();
@@ -585,7 +621,7 @@ public class PracticeAppGui implements ActionListener {
         songDetailsPanel.add(instrumentPanel);
 
         JLabel barDisplay = new JLabel();
-        barDisplay.setText("Number of bars: " + song.getBarNumber());
+        barDisplay.setText("Number of bars: " + currentSong.getBarNumber());
         barDisplay.setForeground(Color.BLUE);
         barDisplay.setFont(new Font("Futura", Font.BOLD, 20));
         JPanel barPanel = new JPanel();
@@ -593,27 +629,210 @@ public class PracticeAppGui implements ActionListener {
         songDetailsPanel.add(barPanel);
 
         JLabel tempoDisplay = new JLabel();
-        tempoDisplay.setText("Tempo: " + song.getTargetTempo());
+        tempoDisplay.setText("Tempo: " + currentSong.getTargetTempo());
         tempoDisplay.setForeground(Color.BLUE);
         tempoDisplay.setFont(new Font("Futura", Font.BOLD, 20));
         JPanel tempoPanel = new JPanel();
         tempoPanel.add(tempoDisplay);
         songDetailsPanel.add(tempoPanel);
 
-        allDetailsPanel = new JPanel();
-        allDetailsPanel.setLayout(new BoxLayout(allDetailsPanel, BoxLayout.PAGE_AXIS));
-        allDetailsPanel.setBackground(new Color(0, 0, 0, 0));
-        allDetailsPanel.add(panelForTitle);
-        allDetailsPanel.add(Box.createVerticalStrut(40));
-        allDetailsPanel.add(barSongList);
-        allDetailsPanel.add(Box.createVerticalStrut(40));
-        allDetailsPanel.add(songDetailsPanel);
+        wholePagePanel = new JPanel();
+        wholePagePanel.setLayout(new BoxLayout(wholePagePanel, BoxLayout.PAGE_AXIS));
+        wholePagePanel.setBackground(new Color(0, 0, 0, 0));
+        wholePagePanel.add(panelForTitle);
+        wholePagePanel.add(Box.createVerticalStrut(40));
+        wholePagePanel.add(buttonsPanel);
+        wholePagePanel.add(Box.createVerticalStrut(40));
+        wholePagePanel.add(songDetailsPanel);
 
-        frame.add(allDetailsPanel);
+        frame.add(wholePagePanel);
+    }
 
-        // frameSongList.add(panelForTitle);
-        // frameSongList.add(barSongList);
-        // frameSongList.add(songList);
+    public void practiceOptionPane() {
+        optionPane = new JOptionPane();
+        int result = JOptionPane.showOptionDialog(null, "Do you want to start a practice session with this song?",
+                "Start practice session?",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+        if (result == JOptionPane.OK_OPTION) {
+            frame.setVisible(false);
+            displayPractice();
+        }
+    }
+
+    public void displayPractice() {
+        currentInitialTime = System.currentTimeMillis();
+        currentDate = LocalDate.now();
+        currentStartTime = LocalTime.now();
+
+        frame = new JFrame();
+        frame.setSize(840, 840);
+        frame.setTitle("Conmoto Music Practice App");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new FlowLayout());
+        frame.getContentPane().setBackground(new Color(2, 5, 98));
+        frame.setVisible(true);
+
+        headerLabel = new JLabel();
+        headerLabel.setText(currentSong.getTitle());
+        headerLabel.setHorizontalTextPosition(JLabel.CENTER);
+        headerLabel.setVerticalTextPosition(JLabel.BOTTOM);
+        headerLabel.setForeground(Color.WHITE);
+        headerLabel.setFont(new Font("Futura", Font.BOLD, 30));
+        headerLabel.setIconTextGap(-50);
+        headerLabel.setHorizontalAlignment(JLabel.CENTER);
+        headerLabel.setVerticalAlignment(JLabel.TOP);
+
+        panelForTitle = new JPanel();
+        panelForTitle.setBackground(new Color(0, 0, 0, 0));
+        panelForTitle.add(headerLabel);
+
+        endPracticeButton = new JButton();
+        endPracticeButton.setText("End practice");
+        endPracticeButton.setSize(100, 100);
+        endPracticeButton.setHorizontalAlignment(JButton.CENTER);
+        endPracticeButton.setVerticalAlignment(JButton.CENTER);
+        endPracticeButton.addActionListener(this);
+        endPracticeButton.setFocusable(false);
+        endPracticeButton.setFont(new Font("Futura", Font.PLAIN, 20));
+        endPracticeButton.setForeground(new Color(2, 5, 98));
+
+        buttonsPanel = new JPanel();
+        buttonsPanel.setBackground(new Color(2, 5, 98));
+        buttonsPanel.add(endPracticeButton);
+
+        JLabel practicingLabel = new JLabel(practicing);
+
+        wholePagePanel = new JPanel();
+        wholePagePanel.setLayout(new BoxLayout(wholePagePanel, BoxLayout.PAGE_AXIS));
+        wholePagePanel.setBackground(new Color(0, 0, 0, 0));
+        wholePagePanel.add(panelForTitle);
+        wholePagePanel.add(Box.createVerticalStrut(40));
+        wholePagePanel.add(practicingLabel);
+        wholePagePanel.add(Box.createVerticalStrut(40));
+        wholePagePanel.add(buttonsPanel);
+
+        frame.add(wholePagePanel);
+    }
+
+    public void endPracticeOptionPane() {
+        optionPane = new JOptionPane();
+        int result = JOptionPane.showOptionDialog(null, "Do you want to end this practice session?",
+                "End practice session?",
+                JOptionPane.OK_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE, null, null, null);
+        if (result == JOptionPane.OK_OPTION) {
+            displayEndPractice();
+        }
+    }
+
+    public void displayEndPractice() {
+        currentEndTime = LocalTime.now();
+        currentElapsedTime = System.currentTimeMillis() - currentInitialTime;
+        currentFinalElapsedMinutes = convertDurationToMinutes(currentElapsedTime);
+
+        frame.setVisible(false);
+        frame = new JFrame();
+        frame.setSize(840, 840);
+        frame.setTitle("Conmoto Music Practice App");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new FlowLayout());
+        frame.getContentPane().setBackground(new Color(2, 5, 98));
+        frame.setVisible(true);
+
+        headerLabel = new JLabel();
+        headerLabel.setText(currentSong.getTitle());
+        headerLabel.setHorizontalTextPosition(JLabel.CENTER);
+        headerLabel.setVerticalTextPosition(JLabel.BOTTOM);
+        headerLabel.setForeground(Color.WHITE);
+        headerLabel.setFont(new Font("Futura", Font.BOLD, 30));
+        headerLabel.setIconTextGap(-50);
+        headerLabel.setHorizontalAlignment(JLabel.CENTER);
+        headerLabel.setVerticalAlignment(JLabel.TOP);
+
+        panelForTitle = new JPanel();
+        panelForTitle.setBackground(new Color(0, 0, 0, 0));
+        panelForTitle.add(headerLabel);
+
+        fillDetailsButton = new JButton();
+        fillDetailsButton.setText("Fill in practice details");
+        fillDetailsButton.setSize(100, 100);
+        fillDetailsButton.setHorizontalAlignment(JButton.CENTER);
+        fillDetailsButton.setVerticalAlignment(JButton.CENTER);
+        fillDetailsButton.addActionListener(this);
+        fillDetailsButton.setFocusable(false);
+        fillDetailsButton.setFont(new Font("Futura", Font.PLAIN, 20));
+        fillDetailsButton.setForeground(new Color(2, 5, 98));
+
+        buttonsPanel = new JPanel();
+        buttonsPanel.setBackground(new Color(2, 5, 98));
+        buttonsPanel.add(fillDetailsButton);
+
+        JLabel practiceDuration = new JLabel("You practiced for " + currentFinalElapsedMinutes + " minutes!");
+        practiceDuration.setForeground(Color.WHITE);
+        practiceDuration.setFont(new Font("Futura", Font.BOLD, 30));
+        headerLabel.setHorizontalAlignment(JLabel.CENTER);
+        headerLabel.setVerticalAlignment(JLabel.CENTER);
+
+        panelLabel = new JPanel();
+        panelLabel.setBackground(new Color(0, 0, 0, 0));
+        panelLabel.add(practiceDuration);
+
+        wholePagePanel = new JPanel();
+        wholePagePanel.setLayout(new BoxLayout(wholePagePanel, BoxLayout.PAGE_AXIS));
+        wholePagePanel.setBackground(new Color(0, 0, 0, 0));
+        wholePagePanel.add(panelForTitle);
+        wholePagePanel.add(Box.createVerticalStrut(40));
+        wholePagePanel.add(panelLabel);
+        wholePagePanel.add(Box.createVerticalStrut(40));
+        wholePagePanel.add(buttonsPanel);
+
+        frame.add(wholePagePanel);
+    }
+
+    public void fillInPracticeDetails() throws IncorrectFormatException {
+        optionPane = new JOptionPane();
+        textFieldsPane = new JPanel();
+        textFieldsPane.setLayout(new GridLayout(4, 1));
+        JTextField practiceTempo = new JTextField();
+        JTextField startingBar = new JTextField();
+        JTextField endingBar = new JTextField();
+        JTextField practiceMastery = new JTextField();
+        textFieldsPane.add(new JLabel("Practice tempo:"));
+        textFieldsPane.add(practiceTempo);
+        textFieldsPane.add(new JLabel("Starting bar:"));
+        textFieldsPane.add(startingBar);
+        textFieldsPane.add(new JLabel("Ending bar:"));
+        textFieldsPane.add(endingBar);
+        textFieldsPane.add(new JLabel("Overall song mastery:"));
+        textFieldsPane.add(practiceMastery);
+        int result = JOptionPane.showConfirmDialog(optionPane, textFieldsPane,
+                "Fill in your practice session details", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+            int tempoToBeLogged = Integer.parseInt(practiceTempo.getText());
+            int startBarToBeLogged = Integer.parseInt(startingBar.getText());
+            int endBarToBeLogged = Integer.parseInt(endingBar.getText());
+            float masteryToBeLogged = Float.parseFloat(practiceMastery.getText());
+
+            if (tempoToBeLogged <= 0 || startBarToBeLogged <= 0 || endBarToBeLogged <= 0) {
+                throw new IncorrectFormatException();
+            }
+            if (endBarToBeLogged < startBarToBeLogged) {
+                throw new IncorrectFormatException();
+            }
+            if (masteryToBeLogged > 10 || masteryToBeLogged < 0) {
+                throw new IncorrectFormatException();
+            }
+            Session session = new Session(tempoToBeLogged, startBarToBeLogged, endBarToBeLogged, masteryToBeLogged,
+                    currentElapsedTime, currentDate, currentStartTime, currentEndTime);
+            currentSong.logSessionToSessionList(session);
+            currentSong.logSessionToDay(session);
+            int result2 = JOptionPane.showOptionDialog(null, "Current practice session has been logged!", "Message",
+                    JOptionPane.DEFAULT_OPTION,
+                    JOptionPane.INFORMATION_MESSAGE, null, null, null);
+            if (result2 == JOptionPane.OK_OPTION) {
+                displaySongDetails();
+            }
+
+        }
     }
 
     @Override
@@ -639,7 +858,34 @@ public class PracticeAppGui implements ActionListener {
             displaySongList();
         } else if (e.getSource() == detailsButton) {
             songDetailsOptionPane();
+        } else if (e.getSource() == monthlyProgressButton) {
+
+        } else if (e.getSource() == practiceHistoryButton) {
+
+        } else if (e.getSource() == practiceButton) {
+            practiceOptionPane();
+        } else if (e.getSource() == endPracticeButton) {
+            endPracticeOptionPane();
+        } else if (e.getSource() == fillDetailsButton) {
+            try {
+                fillInPracticeDetails();
+            } catch (IncorrectFormatException | NumberFormatException e1) {
+                JOptionPane.showOptionDialog(null,
+                        "Tempo and bar numbers must be integers, overall song mastery must be a float between 0 and 10 inclusive, and ending bar number must be greater than or equal to starting bar number!",
+                        "Warning",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
+            }
         }
+    }
+
+    // EFFECTS: converts the duration (in miliseconds) into minutes, returning the
+    // converted duration as a float
+    public float convertDurationToMinutes(long duration) {
+        double durationMinutes = (double) duration / 60000.0;
+        String durationMinutesString = String.valueOf(durationMinutes);
+        String durationMinutesStringTruncated = durationMinutesString.substring(0, 4);
+        float finalDuration = Float.parseFloat(durationMinutesStringTruncated);
+        return finalDuration;
     }
 
 }
