@@ -1,33 +1,30 @@
 package ui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
-import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.Month;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import model.Day;
 import model.Session;
 import model.Song;
 import model.SongLibrary;
@@ -900,71 +897,245 @@ public class PracticeAppGui implements ActionListener {
         wholePagePanel.add(buttonsPanel);
         wholePagePanel.add(Box.createVerticalStrut(40));
 
-        if (currentSong.getSessions().isEmpty()) {
+        for (int i = 0; i < currentSong.getSessions().size(); i++) {
+            Session session = currentSong.getSessions().get(i);
+            String formattedDate = formatDate(session.getPracticeDate());
+            String formattedStartTime = formatTime(session.getStartTime());
+            String formattedEndTime = formatTime(session.getEndTime());
+            float finalDuration = convertDurationToMinutes(session.getDuration());
+
             mainPanel = new JPanel();
-            mainPanel.setLayout(new GridLayout(songlibrary.getSongList().size(), 1));
-            mainPanel.setBackground(Color.WHITE);
-            JLabel emptiness = new JLabel();
-            emptiness.setText("No practice sessions found.");
-            emptiness.setForeground(Color.BLUE);
-            emptiness.setFont(new Font("Futura", Font.BOLD, 20));
-            mainPanel.add(emptiness);
-            wholePagePanel.add(mainPanel);
-        } else {
-            for (int i = 0; i < currentSong.getSessions().size(); i++) {
-                Session session = currentSong.getSessions().get(i);
-                String formattedDate = formatDate(session.getPracticeDate());
-                String formattedStartTime = formatTime(session.getStartTime());
-                String formattedEndTime = formatTime(session.getEndTime());
-                float finalDuration = convertDurationToMinutes(session.getDuration());
-
-                mainPanel = new JPanel();
-                mainPanel.setLayout(new GridLayout(5, 1));
-                if (i % 2 == 0) {
+            mainPanel.setLayout(new GridLayout(5, 1));
+            if (i % 2 == 0) {
                 mainPanel.setBackground(Color.WHITE);
-                }
-                else {
-                    mainPanel.setBackground(new Color(139, 232, 203));
-                }
-
-                JLabel date = new JLabel();
-                date.setText(formattedDate + " " + formattedStartTime + "-" + formattedEndTime);
-                date.setForeground(Color.BLUE);
-                date.setFont(new Font("Futura", Font.BOLD, 20));
-                mainPanel.add(date);
-
-                JLabel tempo = new JLabel();
-                tempo.setText("Tempo: " + session.getTempo());
-                tempo.setForeground(Color.BLUE);
-                tempo.setFont(new Font("Futura", Font.BOLD, 20));
-                mainPanel.add(tempo);
-
-                JLabel bars = new JLabel();
-                bars.setText("Bars practiced: " + session.getStartBar() + "-" + session.getEndBar());
-                bars.setForeground(Color.BLUE);
-                bars.setFont(new Font("Futura", Font.BOLD, 20));
-                mainPanel.add(bars);
-
-                JLabel mastery = new JLabel();
-                mastery.setText("Overall mastery: " + session.getOverallMastery());
-                mastery.setForeground(Color.BLUE);
-                mastery.setFont(new Font("Futura", Font.BOLD, 20));
-                mainPanel.add(mastery);
-
-                JLabel duration = new JLabel();
-                duration.setText("Duration: " + finalDuration + " minutes");
-                duration.setForeground(Color.BLUE);
-                duration.setFont(new Font("Futura", Font.BOLD, 20));
-                mainPanel.add(duration);
-                wholePagePanel.add(mainPanel);
+            } else {
+                mainPanel.setBackground(new Color(139, 232, 203));
             }
+
+            JLabel date = new JLabel();
+            date.setText(formattedDate + " " + formattedStartTime + "-" + formattedEndTime);
+            date.setForeground(Color.BLUE);
+            date.setFont(new Font("Futura", Font.BOLD, 20));
+            mainPanel.add(date);
+
+            JLabel tempo = new JLabel();
+            tempo.setText("Tempo: " + session.getTempo());
+            tempo.setForeground(Color.BLUE);
+            tempo.setFont(new Font("Futura", Font.BOLD, 20));
+            mainPanel.add(tempo);
+
+            JLabel bars = new JLabel();
+            bars.setText("Bars practiced: " + session.getStartBar() + "-" + session.getEndBar());
+            bars.setForeground(Color.BLUE);
+            bars.setFont(new Font("Futura", Font.BOLD, 20));
+            mainPanel.add(bars);
+
+            JLabel mastery = new JLabel();
+            mastery.setText("Overall mastery: " + session.getOverallMastery());
+            mastery.setForeground(Color.BLUE);
+            mastery.setFont(new Font("Futura", Font.BOLD, 20));
+            mainPanel.add(mastery);
+
+            JLabel duration = new JLabel();
+            duration.setText("Duration: " + finalDuration + " minutes");
+            duration.setForeground(Color.BLUE);
+            duration.setFont(new Font("Futura", Font.BOLD, 20));
+            mainPanel.add(duration);
+            wholePagePanel.add(mainPanel);
+
         }
 
         frame.add(wholePagePanel);
     }
 
     public void monthlyProgressOptionPanel() {
+        optionPane = new JOptionPane();
+        textFieldsPane = new JPanel();
+        textFieldsPane.setLayout(new GridLayout(2, 1));
+        String[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September",
+                "October", "November", "December" };
+        JComboBox month = new JComboBox<>(months);
+        JTextField year = new JTextField();
+        textFieldsPane.add(new JLabel("Month:"));
+        textFieldsPane.add(month);
+        textFieldsPane.add(new JLabel("Year:"));
+        textFieldsPane.add(year);
+        int result = JOptionPane.showConfirmDialog(optionPane, textFieldsPane,
+                "Enter the month and year whose progress report you want to view: ", JOptionPane.OK_CANCEL_OPTION);
+        if (result == JOptionPane.OK_OPTION) {
+            String monthString = (String) month.getSelectedItem();
+            Month monthToView = convertStringToMonth(monthString);
+            int yearToView = Integer.parseInt(year.getText());
+            List<Day> daysInMonth = currentSong.returnDaysInMonth(monthToView, yearToView);
+            if (daysInMonth.isEmpty()) {
+                JOptionPane.showOptionDialog(null, "No practice session in that month of the year was found.",
+                        "Warning",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
+            } else {
+                displayMonthlyProgress(monthString, yearToView, daysInMonth);
+            }
+        }
+    }
 
+    public void displayMonthlyProgress(String month, int year, List<Day> daysInMonth) {
+        frame.setVisible(false);
+        frame = new JFrame();
+        frame.setSize(1050, 840);
+        frame.setTitle("Conmoto Music Practice App");
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLayout(new FlowLayout());
+        frame.getContentPane().setBackground(new Color(2, 5, 98));
+        frame.setVisible(true);
+
+        headerLabel = new JLabel();
+        headerLabel.setText("Monthly progress report for " + month + " " + year + "\n");
+        headerLabel.setHorizontalTextPosition(JLabel.CENTER);
+        headerLabel.setVerticalTextPosition(JLabel.BOTTOM);
+        headerLabel.setForeground(Color.WHITE);
+        headerLabel.setFont(new Font("Futura", Font.BOLD, 30));
+        headerLabel.setIconTextGap(-50);
+        headerLabel.setHorizontalAlignment(JLabel.CENTER);
+        headerLabel.setVerticalAlignment(JLabel.TOP);
+
+        panelForTitle = new JPanel();
+        panelForTitle.setBackground(new Color(0, 0, 0, 0));
+        panelForTitle.add(headerLabel);
+
+        returnToDetailsButton = new JButton();
+        returnToDetailsButton.setText("Return to song details page");
+        returnToDetailsButton.setSize(100, 100);
+        returnToDetailsButton.setHorizontalAlignment(JButton.CENTER);
+        returnToDetailsButton.setVerticalAlignment(JButton.CENTER);
+        returnToDetailsButton.addActionListener(this);
+        returnToDetailsButton.setFocusable(false);
+        returnToDetailsButton.setFont(new Font("Futura", Font.PLAIN, 20));
+        returnToDetailsButton.setForeground(new Color(2, 5, 98));
+
+        quitButton = new JButton();
+        quitButton.setText("Quit app");
+        quitButton.setSize(100, 100);
+        quitButton.setHorizontalAlignment(JButton.CENTER);
+        quitButton.setVerticalAlignment(JButton.CENTER);
+        quitButton.addActionListener(this);
+        quitButton.setFocusable(false);
+        quitButton.setFont(new Font("Futura", Font.PLAIN, 20));
+        quitButton.setForeground(new Color(2, 5, 98));
+
+        buttonsPanel = new JPanel();
+        buttonsPanel.setLayout(new GridLayout(1, 2));
+        buttonsPanel.setBackground(new Color(2, 5, 98));
+        buttonsPanel.add(returnToDetailsButton);
+        buttonsPanel.add(quitButton);
+
+        wholePagePanel = new JPanel();
+        wholePagePanel.setLayout(new BoxLayout(wholePagePanel, BoxLayout.PAGE_AXIS));
+        wholePagePanel.setBackground(new Color(0, 0, 0, 0));
+        wholePagePanel.add(panelForTitle);
+        wholePagePanel.add(Box.createVerticalStrut(40));
+        wholePagePanel.add(buttonsPanel);
+        wholePagePanel.add(Box.createVerticalStrut(40));
+
+        mainPanel = new JPanel();
+        mainPanel.setLayout(new GridLayout(1, 4));
+        mainPanel.setBackground(new Color(0, 0, 0, 0));
+
+        displayDurationProgress(daysInMonth);
+        displayTempoProgress(daysInMonth);
+        displayMasteryProgress(daysInMonth);
+        displayBarsPracticedProgress(daysInMonth);
+
+        wholePagePanel.add(mainPanel);
+        frame.add(wholePagePanel);
+    }
+
+    // EFFECTS: displays the total practice duration in a given day for all days in
+    // the dayList
+    public void displayDurationProgress(List<Day> dayList) {
+        JPanel durationPanel = new JPanel();
+        durationPanel.setLayout(new GridLayout(1 + dayList.size(), 1));
+        durationPanel.setBackground(Color.WHITE);
+        JLabel subHeader = new JLabel("Daily total duration progress: ");
+        subHeader.setForeground(Color.BLUE);
+        subHeader.setFont(new Font("Futura", Font.PLAIN, 20));
+        durationPanel.add(subHeader);
+        for (Day day : dayList) {
+            String formattedDate = formatDate(day.getLocalDate());
+            float finalDuration = convertDurationToMinutes(day.getTotalDuration());
+            JLabel content = new JLabel(formattedDate + ": " + finalDuration + " minutes");
+            content.setFont(new Font("Arial", Font.PLAIN, 15));
+            durationPanel.add(content);
+        }
+        mainPanel.add(durationPanel);
+    }
+
+    // EFFECTS: displays the average tempo in a given day for all days in the
+    // dayList
+    public void displayTempoProgress(List<Day> dayList) {
+        JPanel tempoPanel = new JPanel();
+        tempoPanel.setLayout(new GridLayout(1 + dayList.size(), 1));
+        tempoPanel.setBackground(new Color(139, 232, 203));
+        JLabel subHeader = new JLabel("Daily average tempo progress: ");
+        subHeader.setForeground(Color.BLUE);
+        subHeader.setFont(new Font("Futura", Font.PLAIN, 20));
+        tempoPanel.add(subHeader);
+        for (Day day : dayList) {
+            String formattedDate = formatDate(day.getLocalDate());
+            JLabel content = new JLabel(formattedDate + ": " + day.getAverageTempo() + "\n");
+            content.setFont(new Font("Arial", Font.PLAIN, 15));
+            tempoPanel.add(content);
+        }
+        mainPanel.add(tempoPanel);
+    }
+
+    // EFFECTS: displays the average mastery level in a given day for all days in
+    // the dayList
+    public void displayMasteryProgress(List<Day> dayList) {
+        JPanel masteryPanel = new JPanel();
+        masteryPanel.setLayout(new GridLayout(1 + dayList.size(), 1));
+        masteryPanel.setBackground(new Color(204, 139, 134));
+        JLabel subHeader = new JLabel("Daily average mastery progress: ");
+        subHeader.setForeground(Color.BLUE);
+        subHeader.setFont(new Font("Futura", Font.PLAIN, 20));
+        masteryPanel.add(subHeader);
+        for (Day day : dayList) {
+            String formattedDate = formatDate(day.getLocalDate());
+            JLabel content = new JLabel(formattedDate + ": " + day.getAverageMastery());
+            content.setFont(new Font("Arial", Font.PLAIN, 15));
+            masteryPanel.add(content);
+        }
+        mainPanel.add(masteryPanel);
+    }
+
+    // EFFECTS: displays the bars practiced in a given day for all days in the
+    // dayList
+    public void displayBarsPracticedProgress(List<Day> dayList) {
+        JPanel barPanel = new JPanel();
+        barPanel.setLayout(new GridLayout(1 + dayList.size(), 1));
+        barPanel.setBackground(new Color(255, 230, 109));
+        JLabel subHeader = new JLabel("Daily bars practiced progress: ");
+        subHeader.setForeground(Color.BLUE);
+        subHeader.setFont(new Font("Futura", Font.PLAIN, 20));
+        barPanel.add(subHeader);
+        for (Day day : dayList) {
+            String allBarsPracticed = "";
+            List<Session> sesList = day.getSessionList();
+            for (int i = 0; i < sesList.size(); i++) {
+                if (i == 0) {
+                    String barsPracticed = String.valueOf(sesList.get(i).getStartBar()) + "-"
+                            + String.valueOf(sesList.get(i).getEndBar());
+                    allBarsPracticed = allBarsPracticed + barsPracticed;
+                } else {
+                    String barsPracticed = ", " + String.valueOf(sesList.get(i).getStartBar()) + "-"
+                            + String.valueOf(sesList.get(i).getEndBar());
+                    allBarsPracticed = allBarsPracticed + barsPracticed;
+                }
+            }
+            String formattedDate = formatDate(day.getLocalDate());
+            JLabel content = new JLabel(formattedDate + ": " + allBarsPracticed);
+            content.setFont(new Font("Arial", Font.PLAIN, 15));
+            barPanel.add(content);
+        }
+        mainPanel.add(barPanel);
     }
 
     @Override
@@ -991,10 +1162,21 @@ public class PracticeAppGui implements ActionListener {
             songDetailsOptionPane();
         } else if (e.getSource() == returnToDetailsButton) {
             displaySongDetails();
-        }else if (e.getSource() == monthlyProgressButton) {
-            monthlyProgressOptionPanel();
+        } else if (e.getSource() == monthlyProgressButton) {
+            if (currentSong.getSessions().isEmpty()) {
+                JOptionPane.showOptionDialog(null, "You have not started any practice sessions yet", "Warning",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
+            } else {
+                monthlyProgressOptionPanel();
+            }
         } else if (e.getSource() == practiceHistoryButton) {
-            displayPracticeHistory();
+            if (currentSong.getSessions().isEmpty()) {
+                JOptionPane.showOptionDialog(null, "You have not started any practice sessions yet", "Warning",
+                        JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
+
+            } else {
+                displayPracticeHistory();
+            }
         } else if (e.getSource() == practiceButton) {
             practiceOptionPane();
         } else if (e.getSource() == endPracticeButton) {
@@ -1035,6 +1217,39 @@ public class PracticeAppGui implements ActionListener {
         DateTimeFormatter formatPatternTime = DateTimeFormatter.ofPattern("HH:mm:ss");
         String formattedTime = time.format(formatPatternTime);
         return formattedTime;
+    }
+
+    // EFFECTS: returns a Month object that corresponds to the month name string
+    @SuppressWarnings("methodlength")
+    public Month convertStringToMonth(String month) {
+        switch (month) {
+            case "January":
+                return Month.JANUARY;
+            case "February":
+                return Month.FEBRUARY;
+            case "March":
+                return Month.MARCH;
+            case "April":
+                return Month.APRIL;
+            case "May":
+                return Month.MAY;
+            case "June":
+                return Month.JUNE;
+            case "July":
+                return Month.JULY;
+            case "August":
+                return Month.AUGUST;
+            case "September":
+                return Month.SEPTEMBER;
+            case "October":
+                return Month.OCTOBER;
+            case "November":
+                return Month.NOVEMBER;
+            case "December":
+                return Month.DECEMBER;
+            default:
+                return null;
+        }
     }
 
 }
