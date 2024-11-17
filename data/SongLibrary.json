@@ -30,55 +30,89 @@
                 "startBar": 4,
                 "endBar": 3,
                 "mastery": 3.3
+            },
+            {
+                "duration": 2164,
+                "date": "2024-11-16",
+                "tempo": 2,
+                "startTime": "16:28:57.957882",
+                "endTime": "16:29:00.108333",
+                "startBar": 4,
+                "endBar": 55,
+                "mastery": 4
+            },
+            {
+                "duration": 3584,
+                "date": "2024-11-16",
+                "tempo": 3,
+                "startTime": "16:29:52.738242",
+                "endTime": "16:29:56.322560",
+                "startBar": 3,
+                "endBar": 4,
+                "mastery": 5
             }
         ],
         "composer": "dexieme",
         "tempo": 33,
-        "days": [{
-            "date": "2024-10-22",
-            "sessions": [
-                {
-                    "duration": 2141,
-                    "date": "2024-10-22",
-                    "tempo": 90,
-                    "startTime": "15:48:31.567843",
-                    "endTime": "15:48:33.690511",
-                    "startBar": 434,
-                    "endBar": 33,
-                    "mastery": 2.2
-                },
-                {
-                    "duration": 1157,
-                    "date": "2024-10-22",
-                    "tempo": 4,
-                    "startTime": "15:49:12.792152",
-                    "endTime": "15:49:13.949681",
-                    "startBar": 4,
-                    "endBar": 3,
-                    "mastery": 3.3
-                }
-            ]
-        }],
+        "days": [
+            {
+                "date": "2024-10-22",
+                "sessions": [
+                    {
+                        "duration": 2141,
+                        "date": "2024-10-22",
+                        "tempo": 90,
+                        "startTime": "15:48:31.567843",
+                        "endTime": "15:48:33.690511",
+                        "startBar": 434,
+                        "endBar": 33,
+                        "mastery": 2.2
+                    },
+                    {
+                        "duration": 1157,
+                        "date": "2024-10-22",
+                        "tempo": 4,
+                        "startTime": "15:49:12.792152",
+                        "endTime": "15:49:13.949681",
+                        "startBar": 4,
+                        "endBar": 3,
+                        "mastery": 3.3
+                    }
+                ]
+            },
+            {
+                "date": "2024-11-16",
+                "sessions": [
+                    {
+                        "duration": 2164,
+                        "date": "2024-11-16",
+                        "tempo": 2,
+                        "startTime": "16:28:57.957882",
+                        "endTime": "16:29:00.108333",
+                        "startBar": 4,
+                        "endBar": 55,
+                        "mastery": 4
+                    },
+                    {
+                        "duration": 3584,
+                        "date": "2024-11-16",
+                        "tempo": 3,
+                        "startTime": "16:29:52.738242",
+                        "endTime": "16:29:56.322560",
+                        "startBar": 3,
+                        "endBar": 4,
+                        "mastery": 5
+                    }
+                ]
+            }
+        ],
         "instrument": "ded",
         "title": "bilan"
     },
     {
         "barCount": 223123,
-        "sessions": [{
-            "duration": 766,
-            "date": "2024-10-25",
-            "tempo": 1,
-            "startTime": "00:42:43.963935",
-            "endTime": "00:42:44.717720",
-            "startBar": 2,
-            "endBar": 3,
-            "mastery": 4
-        }],
-        "composer": "trois",
-        "tempo": 232,
-        "days": [{
-            "date": "2024-10-25",
-            "sessions": [{
+        "sessions": [
+            {
                 "duration": 766,
                 "date": "2024-10-25",
                 "tempo": 1,
@@ -87,9 +121,90 @@
                 "startBar": 2,
                 "endBar": 3,
                 "mastery": 4
-            }]
-        }],
+            },
+            {
+                "duration": 91922,
+                "date": "2024-11-15",
+                "tempo": 23,
+                "startTime": "21:49:03.832744",
+                "endTime": "21:50:35.739208",
+                "startBar": 11,
+                "endBar": 54,
+                "mastery": 5.5
+            },
+            {
+                "duration": 2196,
+                "date": "2024-11-16",
+                "tempo": 44,
+                "startTime": "18:07:27.404818",
+                "endTime": "18:07:29.587589",
+                "startBar": 55,
+                "endBar": 454,
+                "mastery": 5.5
+            }
+        ],
+        "composer": "trois",
+        "tempo": 232,
+        "days": [
+            {
+                "date": "2024-10-25",
+                "sessions": [{
+                    "duration": 766,
+                    "date": "2024-10-25",
+                    "tempo": 1,
+                    "startTime": "00:42:43.963935",
+                    "endTime": "00:42:44.717720",
+                    "startBar": 2,
+                    "endBar": 3,
+                    "mastery": 4
+                }]
+            },
+            {
+                "date": "2024-11-15",
+                "sessions": [{
+                    "duration": 91922,
+                    "date": "2024-11-15",
+                    "tempo": 23,
+                    "startTime": "21:49:03.832744",
+                    "endTime": "21:50:35.739208",
+                    "startBar": 11,
+                    "endBar": 54,
+                    "mastery": 5.5
+                }]
+            },
+            {
+                "date": "2024-11-16",
+                "sessions": [{
+                    "duration": 2196,
+                    "date": "2024-11-16",
+                    "tempo": 44,
+                    "startTime": "18:07:27.404818",
+                    "endTime": "18:07:29.587589",
+                    "startBar": 55,
+                    "endBar": 454,
+                    "mastery": 5.5
+                }]
+            }
+        ],
         "instrument": "matara",
         "title": "ghislan"
+    },
+    {
+        "barCount": 33,
+        "sessions": [],
+        "composer": "rach",
+        "tempo": 44,
+        "days": [],
+        "instrument": "piano",
+        "title": "sonata"
+    },
+    {
+        "barCount": 334,
+        "sessions": [],
+        "composer": "rach",
+        "tempo": 232,
+        "days": [],
+        "instrument": "viola",
+        "title": "prelude"
     }
 ]}
