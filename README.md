@@ -14,3 +14,11 @@ This app will be used by **musicians** and **people who play a musical instrumen
 - As a user, I want to be able to **view** my **monthly practice progress** (in terms of practice duration, bars practiced, tempo, and overall mastery) on **each song** in my song library.
 - As a user, I want to be able to save my song library, along with the song details and practice history of each song in it, to file (if I want to).
 - As a user, I want to be able to load my song library, along with the song details and practice history of each song in it, from file (if I want to).
+
+# Instructions for End User
+- You can add a song to the song library by clicking the **Add a song** button and filling in the details of the song you want to add.
+- You can remove a song from the song library by clicking the **Remove a song** button and entering the title of the song you want to remove.
+- You can filter the song library by composer or instrument name by clicking the **Filter song library by composer** or **Filter song library by instrument** buttons and entering the name of the composer or instrument that you want to filter by.
+- You can locate my visual component by running the program, and the app logo will be the first thing that is displayed. You can also add a song, see the song details, then start a practice session with the song. In the practicing page, you will see a text **currently practicing** with the background image of a piano.
+- You can save the state of my application by clicking the **Save file** button and confirming that you want to save file.
+- You can reload the state of my application by clicking the **Load file** button and confirming that you want to load file.
