@@ -799,7 +799,7 @@ public class PracticeAppGui implements ActionListener {
         textFieldsPane.add(startBar);
         textFieldsPane.add(new JLabel("Ending bar:"));
         textFieldsPane.add(endBar);
-        textFieldsPane.add(new JLabel("Overall song mastery (1-10):"));
+        textFieldsPane.add(new JLabel("Overall song mastery (0-10):"));
         textFieldsPane.add(mastery);
     }
 
