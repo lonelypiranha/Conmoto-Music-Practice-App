@@ -126,8 +126,8 @@ public class PracticeAppGui implements ActionListener {
         addSongButton = buttonFactory("Add a song");
         removeSongButton = buttonFactory("Remove a song");
         detailsButton = buttonFactory("See song details");
-        filterInstrumentButton = buttonFactory("Filter song list by instrument");
-        filterComposerButton = buttonFactory("Filter song list by composer name");
+        filterInstrumentButton = buttonFactory("Filter song library by instrument");
+        filterComposerButton = buttonFactory("Filter song library by composer name");
         loadButton = buttonFactory("Load file");
         saveButton = buttonFactory("Save file");
         quitButton = buttonFactory("Quit app");
