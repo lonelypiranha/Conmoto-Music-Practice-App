@@ -32,6 +32,9 @@ import model.SongLibrary;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
+// A music practice journal app that allows the user to add songs to a practice library 
+// and start practice sessions on the songs. The app also allows the user to 
+// view their practice progress on each song in the song library.
 public class PracticeAppGui implements ActionListener {
     private final ImageIcon logo = new ImageIcon("src/main/ui/on-2.png");
     private final ImageIcon practicing = new ImageIcon("src/main/ui/practicing2.png");
@@ -81,6 +84,7 @@ public class PracticeAppGui implements ActionListener {
     private JsonWriter jsonWriter;
     private JsonReader jsonReader;
 
+    // EFFECTS: creates one instance of Conmoto Music Practice Journal GUI app
     public PracticeAppGui() {
         init();
 
@@ -104,6 +108,9 @@ public class PracticeAppGui implements ActionListener {
         constructFrame();
     }
 
+    // MODIFIES: this
+    // EFFECTS: initializes the song library, filtered library, json writer, json
+    // reader, and the buttons
     private void init() {
         songlibrary = new SongLibrary();
         filteredLibrary = new SongLibrary();
@@ -112,6 +119,8 @@ public class PracticeAppGui implements ActionListener {
         initButtons();
     }
 
+    // MODIFIES: this
+    // EFFECTS: initializes and creates all buttons in the entire app
     private void initButtons() {
         startAppButton = buttonFactory("Start App");
         addSongButton = buttonFactory("Add a song");
@@ -132,6 +141,9 @@ public class PracticeAppGui implements ActionListener {
         returnToDetailsButton = buttonFactory("Return to song details page");
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates the label in the opening page, which contains an ImageIcon
+    // and a text.
     private JLabel makeLabelForOpening() {
         headerLabel = new JLabel();
         headerLabel.setIcon(logo);
@@ -144,7 +156,10 @@ public class PracticeAppGui implements ActionListener {
         return headerLabel;
     }
 
-    public void displaySongList() {
+    // MODIFIES: this
+    // EFFECTS: displays the song library page containing the list of songs in the
+    // song library
+    public void displaySongLibrary() {
         frame.setVisible(false);
 
         headerLabel = makeGenericHeader("Your Song Library");
@@ -164,13 +179,16 @@ public class PracticeAppGui implements ActionListener {
         constructFrame();
     }
 
+    // MODIFIES: this
+    // EFFECTS: adds content (titles of the songs in the song library) to the main
+    // panel of the song library page
     private void createSongLibraryContent() {
         if (songlibrary.getSongList().isEmpty()) {
-            JLabel emptiness = new JLabel();
-            emptiness.setText("Your song library is empty. Add a song!");
-            emptiness.setForeground(Color.BLUE);
-            emptiness.setFont(new Font("Futura", Font.BOLD, 20));
-            mainPanel.add(emptiness);
+            JLabel labelForEmptyLibrary = new JLabel();
+            labelForEmptyLibrary.setText("Your song library is empty. Add a song!");
+            labelForEmptyLibrary.setForeground(Color.BLUE);
+            labelForEmptyLibrary.setFont(new Font("Futura", Font.BOLD, 20));
+            mainPanel.add(labelForEmptyLibrary);
         } else {
             for (int i = 0; i < songlibrary.getSongList().size(); i++) {
                 JLabel songTitle = new JLabel();
@@ -182,6 +200,8 @@ public class PracticeAppGui implements ActionListener {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates the button panel for the song library page
     private JPanel makeButtonsPanelSongLib() {
         buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new GridLayout(4, 2));
@@ -198,6 +218,8 @@ public class PracticeAppGui implements ActionListener {
         return buttonsPanel;
     }
 
+    // EFFECTS: tries to add a song to the song library. If a NumberFormatException
+    // exception is thrown, then the app will fail to add the song.
     private void tryAddSong() {
         try {
             addSong();
@@ -207,6 +229,10 @@ public class PracticeAppGui implements ActionListener {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: Displays an option pane that allows the users to fill in the details
+    // of the song they want to add to the song library, then adds the song to the
+    // song library
     public void addSong() {
         JTextField title = new JTextField();
         JTextField composer = new JTextField();
@@ -228,10 +254,13 @@ public class PracticeAppGui implements ActionListener {
             songlibrary.addSong(newSong);
             JOptionPane.showOptionDialog(null, "Song successfully added!", "Message", JOptionPane.DEFAULT_OPTION,
                     JOptionPane.INFORMATION_MESSAGE, null, null, null);
-            displaySongList();
+            displaySongLibrary();
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates a panel containing the text fields for the users to fill in
+    // the details of the song they want to add to the song library
     private void makeTextFieldsPanelForAddSong(JTextField title, JTextField composer, JTextField instrument,
             JTextField barCount, JTextField tempo) {
         textFieldsPane = new JPanel();
@@ -248,6 +277,10 @@ public class PracticeAppGui implements ActionListener {
         textFieldsPane.add(tempo);
     }
 
+    // MODIFIES: this
+    // EFFECTS: Displays an option pane that allows the users to enter the title
+    // of the song they want to remove from the song library, then removes the song
+    // from the song library
     public void removeSong() {
         JTextField titleToRemove = new JTextField();
         makeTextFieldsPanelForRemoveSong(titleToRemove);
@@ -270,10 +303,13 @@ public class PracticeAppGui implements ActionListener {
                 JOptionPane.showOptionDialog(null, "No song with that title was found!", "Warning",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
             }
-            displaySongList();
+            displaySongLibrary();
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates a panel containing a text field for the users to enter
+    // the title of the song they want to remove from the song library
     private void makeTextFieldsPanelForRemoveSong(JTextField titleToRemove) {
         textFieldsPane = new JPanel();
         textFieldsPane.setLayout(new GridLayout(1, 1));
@@ -281,6 +317,10 @@ public class PracticeAppGui implements ActionListener {
         textFieldsPane.add(titleToRemove);
     }
 
+    // MODIFIES: this
+    // EFFECTS: Displays an option pane that allows the users to enter the name
+    // of the composer who they want to filter by, then displays the filtered song
+    // library
     public void filterComposer() {
         optionPane = new JOptionPane();
         textFieldsPane = new JPanel();
@@ -302,6 +342,10 @@ public class PracticeAppGui implements ActionListener {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: Displays an option pane that allows the users to enter the name
+    // of the instrument who they want to filter by, then displays the filtered song
+    // library
     public void filterInstrument() {
         optionPane = new JOptionPane();
         textFieldsPane = new JPanel();
@@ -323,6 +367,9 @@ public class PracticeAppGui implements ActionListener {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: displays the filtered song library page containing the list of songs
+    // in the filtered song library
     public void displayFilteredLibraryMenu(String instrumentOrComposer, String name) {
         frame.setVisible(false);
 
@@ -343,6 +390,9 @@ public class PracticeAppGui implements ActionListener {
         constructFrame();
     }
 
+    // MODIFIES: this
+    // EFFECTS: adds content (titles of the songs in the filtered song library) to
+    // the main panel of the filtered song library page
     private void createFilteredLibraryContent() {
         for (int i = 0; i < filteredLibrary.getSongList().size(); i++) {
             JLabel songTitle = new JLabel();
@@ -353,6 +403,8 @@ public class PracticeAppGui implements ActionListener {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates the button panel for the filtered song library page
     private JPanel makeButtonsPanelFilteredLib() {
         buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new GridLayout(1, 2));
@@ -363,6 +415,10 @@ public class PracticeAppGui implements ActionListener {
         return buttonsPanel;
     }
 
+    // MODIFIES: this
+    // EFFECTS: Displays an option pane that allows the users to enter the title
+    // of the song whose details they want to view, sets that song as the current
+    // song, then displays the song details page of that song
     public void songDetailsOptionPane() {
         optionPane = new JOptionPane();
         textFieldsPane = new JPanel();
@@ -390,6 +446,9 @@ public class PracticeAppGui implements ActionListener {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: displays the song details page of the current song containing the
+    // details (title, composer, instrument, bar count, tempo) of that current song
     public void displaySongDetails() {
         frame.setVisible(false);
 
@@ -413,6 +472,9 @@ public class PracticeAppGui implements ActionListener {
         constructFrame();
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates a whole page panel which contains the entirety of the
+    // contents of the song details page
     private void assembleWholePagePanelSongDetails() {
         wholePagePanel = new JPanel();
         wholePagePanel.setLayout(new BoxLayout(wholePagePanel, BoxLayout.PAGE_AXIS));
@@ -425,6 +487,9 @@ public class PracticeAppGui implements ActionListener {
         wholePagePanel.add(mainPanel);
     }
 
+    // MODIFIES: this
+    // EFFECTS: adds tempo details of the current song into the main content panel
+    // of the song details page
     private void addTempoToMainPanel() {
         JLabel tempoDisplay = new JLabel();
         tempoDisplay.setText("Tempo: " + currentSong.getTargetTempo());
@@ -436,6 +501,9 @@ public class PracticeAppGui implements ActionListener {
         mainPanel.add(tempoPanel);
     }
 
+    // MODIFIES: this
+    // EFFECTS: adds bar count details of the current song into the main content
+    // panel of the song details page
     private void addBarCountToMainPanel() {
         JLabel barDisplay = new JLabel();
         barDisplay.setText("Number of bars: " + currentSong.getBarNumber());
@@ -447,6 +515,9 @@ public class PracticeAppGui implements ActionListener {
         mainPanel.add(barPanel);
     }
 
+    // MODIFIES: this
+    // EFFECTS: adds instrument details of the current song into the main content
+    // panel of the song details page
     private void addInstrumentToMainPanel() {
         JLabel instrumentDisplay = new JLabel();
         instrumentDisplay.setText("Instrument: " + currentSong.getInstrument());
@@ -458,6 +529,9 @@ public class PracticeAppGui implements ActionListener {
         mainPanel.add(instrumentPanel);
     }
 
+    // MODIFIES: this
+    // EFFECTS: adds composer details of the current song into the main content
+    // panel of the song details page
     private void addComposerToMainPanel() {
         JLabel composerDisplay = new JLabel();
         composerDisplay.setText("Composer: " + currentSong.getComposer());
@@ -469,6 +543,9 @@ public class PracticeAppGui implements ActionListener {
         mainPanel.add(composerPanel);
     }
 
+    // MODIFIES: this
+    // EFFECTS: adds title details of the current song into the main content
+    // panel of the song details page
     private void addTitleToMainPanel() {
         JLabel titleDisplay = new JLabel();
         titleDisplay.setText("Title: " + currentSong.getTitle());
@@ -480,6 +557,8 @@ public class PracticeAppGui implements ActionListener {
         mainPanel.add(titPanel);
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates the button panel for the song details page
     private JPanel makeButtonsPanelSongDetails() {
         buttonsPanel = new JPanel();
         buttonsPanel.setLayout(new GridLayout(2, 2));
@@ -492,6 +571,9 @@ public class PracticeAppGui implements ActionListener {
         return buttonsPanel;
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates a header panel for the song details page containing the
+    // song title
     private JPanel makeHeaderPanelSongDetails() {
         headerLabel = makeGenericHeader(currentSong.getTitle());
         panelForHeader = new JPanel();
@@ -500,6 +582,9 @@ public class PracticeAppGui implements ActionListener {
         return panelForHeader;
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates and additional button panel containing the practice button
+    // for the song details page
     private JPanel makeAdditionalButtonPanel() {
         additionalButtonPanel = new JPanel();
         additionalButtonPanel.add(practiceButton);
@@ -508,6 +593,10 @@ public class PracticeAppGui implements ActionListener {
         return additionalButtonPanel;
     }
 
+    // MODIFIES: this
+    // EFFECTS: Displays an option pane that allows the users to start a practice
+    // session with the current song, then displays the practicing page for that
+    // current song
     public void practiceOptionPane() {
         optionPane = new JOptionPane();
         int result = JOptionPane.showOptionDialog(null, "Do you want to start a practice session with this song?",
@@ -518,6 +607,9 @@ public class PracticeAppGui implements ActionListener {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: starts a practice session and displays the practicing page of the
+    // current song and monitors practice duration
     public void displayPractice() {
         frame.setVisible(false);
         initPracticeStartDateTime();
@@ -543,12 +635,18 @@ public class PracticeAppGui implements ActionListener {
         constructFrame();
     }
 
+    // MODIFIES: this
+    // EFFECTS: Initializes the date and time in which a practice session was
+    // started
     private void initPracticeStartDateTime() {
         currentInitialTime = System.currentTimeMillis();
         currentDate = LocalDate.now();
         currentStartTime = LocalTime.now();
     }
 
+    // MODIFIES: this
+    // EFFECTS: Displays an option pane that allows the users to end the current
+    // practice sessioin, then displays the end practice page of the current session
     public void endPracticeOptionPane() {
         optionPane = new JOptionPane();
         int result = JOptionPane.showOptionDialog(null, "Do you want to end this practice session?",
@@ -559,6 +657,9 @@ public class PracticeAppGui implements ActionListener {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: displays the end practice page of the current practice session
+    // containing the practice duration of that practice session
     public void displayEndPractice() {
         frame.setVisible(false);
         initPracticeEndTime();
@@ -585,6 +686,9 @@ public class PracticeAppGui implements ActionListener {
         constructFrame();
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates a whole page panel which contains the entirety of the
+    // contents of the end practice page
     private void assembleWholePagePanelEndPractice() {
         wholePagePanel = new JPanel();
         wholePagePanel.setLayout(new BoxLayout(wholePagePanel, BoxLayout.PAGE_AXIS));
@@ -596,16 +700,25 @@ public class PracticeAppGui implements ActionListener {
         wholePagePanel.add(buttonsPanel);
     }
 
+    // MODIFIES: this
+    // EFFECTS: initializes the time at which a practice session was ended, and
+    // calculates the practice duration
     private void initPracticeEndTime() {
         currentEndTime = LocalTime.now();
         currentElapsedTime = System.currentTimeMillis() - currentInitialTime;
         currentFinalElapsedMinutes = convertDurationToMinutes(currentElapsedTime);
     }
 
+    // EFFECTS: tries to ask the user to fill in the practice details of the current
+    // practice session, then logs the current practice session into the session
+    // list and day list of the current song. If a NumberFormatException or
+    // ImpossiblePracticeDetailsException exception is thrown, then the app will
+    // fail to log the current practice session and the user will have to re-fill
+    // the practice details
     public void tryFillInPracticeDetails() {
         try {
             fillInPracticeDetails();
-        } catch (IncorrectFormatException | NumberFormatException e1) {
+        } catch (ImpossiblePracticeDetailsException | NumberFormatException e1) {
             String part1 = "Tempo and bar numbers must be integers, ";
             String part2 = "overall song mastery must be a float between 0 and 10 inclusive,";
             String part3 = "and ending bar number must be greater than or equal to starting bar number!";
@@ -615,7 +728,15 @@ public class PracticeAppGui implements ActionListener {
         }
     }
 
-    public void fillInPracticeDetails() throws IncorrectFormatException {
+    // MODIFIES: this
+    // EFFECTS: Displays an option pane that allows the users to fill in the details
+    // of the current practice session then adds the practice session to the session
+    // list and day list of the song.
+    // Throws ImpossiblePracticeDetailsException if
+    // 1. tempo, starting bar, or ending bar is 0 or below
+    // 2. ending bar is smaller than starting bar
+    // 3. mastery level is below 0 or greater than 10
+    public void fillInPracticeDetails() throws ImpossiblePracticeDetailsException {
         JTextField practiceTempo = new JTextField();
         JTextField startingBar = new JTextField();
         JTextField endingBar = new JTextField();
@@ -630,22 +751,31 @@ public class PracticeAppGui implements ActionListener {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: collects the practice details of the current practice session and
+    // logs the practice session to the session list and day list of the current
+    // song
+    // Throws ImpossiblePracticeDetailsException if
+    // 1. tempo, starting bar, or ending bar is 0 or below
+    // 2. ending bar is smaller than starting bar
+    // 3. mastery level is below 0 or greater than 10
     private void handlePracticeDetailsLogging(JTextField practiceTempo, JTextField startingBar, JTextField endingBar,
-            JTextField practiceMastery) throws IncorrectFormatException {
+            JTextField practiceMastery) throws ImpossiblePracticeDetailsException {
         int tempoToBeLogged = Integer.parseInt(practiceTempo.getText());
         int startBarToBeLogged = Integer.parseInt(startingBar.getText());
         int endBarToBeLogged = Integer.parseInt(endingBar.getText());
         float masteryToBeLogged = Float.parseFloat(practiceMastery.getText());
 
-        if (tempoToBeLogged <= 0 || startBarToBeLogged <= 0 || endBarToBeLogged <= 0) {
-            throw new IncorrectFormatException();
+        boolean tempoOrBarNumbersLessThanOrEqualToZero = tempoToBeLogged <= 0 || startBarToBeLogged <= 0
+                || endBarToBeLogged <= 0;
+        boolean endBarSmallerThanStartBar = endBarToBeLogged < startBarToBeLogged;
+        boolean masteryNotBetweenZeroAndTenInclusive = masteryToBeLogged > 10 || masteryToBeLogged < 0;
+
+        if (tempoOrBarNumbersLessThanOrEqualToZero || endBarSmallerThanStartBar
+                || masteryNotBetweenZeroAndTenInclusive) {
+            throw new ImpossiblePracticeDetailsException();
         }
-        if (endBarToBeLogged < startBarToBeLogged) {
-            throw new IncorrectFormatException();
-        }
-        if (masteryToBeLogged > 10 || masteryToBeLogged < 0) {
-            throw new IncorrectFormatException();
-        }
+
         Session session = new Session(tempoToBeLogged, startBarToBeLogged, endBarToBeLogged, masteryToBeLogged,
                 currentElapsedTime, currentDate, currentStartTime, currentEndTime);
         currentSong.logSessionToSessionList(session);
@@ -656,6 +786,9 @@ public class PracticeAppGui implements ActionListener {
         displaySongDetails();
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates a panel containing the text fields for the users to fill in
+    // the details of the current practice session
     private void makeTextFieldsPanelForSongDetails(JTextField tempo, JTextField startBar, JTextField endBar,
             JTextField mastery) {
         textFieldsPane = new JPanel();
@@ -670,6 +803,9 @@ public class PracticeAppGui implements ActionListener {
         textFieldsPane.add(mastery);
     }
 
+    // EFFECTS: displays an option pane stating that the user has not started any
+    // practice sessions if that is indeed the case, otherwise display practice
+    // history page
     public void handlePracticeHistoryButton() {
         if (currentSong.getSessions().isEmpty()) {
             JOptionPane.showOptionDialog(null, "You have not started any practice sessions yet", "Warning",
@@ -680,6 +816,10 @@ public class PracticeAppGui implements ActionListener {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: displays the practice history page of the current song containing
+    // all the practice session of that song along with their details (date, time,
+    // duration, tempo, bars practiced, mastery level)
     public void displayPracticeHistory() {
         frame.setVisible(false);
 
@@ -707,6 +847,10 @@ public class PracticeAppGui implements ActionListener {
         constructFrame();
     }
 
+    // MODIFIES: this
+    // EFFECTS: constructs the main panel of the practice history page, which
+    // consists of all the practice sessions of the current song along with their
+    // details (date, time, duration, tempo, bars practiced, mastery level)
     private void constructMainPanelsPracticeHistory() {
         for (int i = 0; i < currentSong.getSessions().size(); i++) {
             Session session = currentSong.getSessions().get(i);
@@ -733,6 +877,10 @@ public class PracticeAppGui implements ActionListener {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: adds a label with a certain string to the main panel of the practice
+    // history page. Used to add labels containing the practice session details into
+    // the main panel
     private void addLabelsForPracticeHistory(String s) {
         JLabel label = new JLabel();
         label.setText(s);
@@ -741,6 +889,9 @@ public class PracticeAppGui implements ActionListener {
         mainPanel.add(label);
     }
 
+    // EFFECTS: displays an option pane stating that the user has not started any
+    // practice sessions if that is indeed the case, otherwise display monthly
+    // practice progress page
     public void handleMonthlyProgressButton() {
         if (currentSong.getSessions().isEmpty()) {
             JOptionPane.showOptionDialog(null, "You have not started any practice sessions yet", "Warning",
@@ -750,6 +901,9 @@ public class PracticeAppGui implements ActionListener {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: Displays an option pane that allows the users to enter the month and
+    // year whose practice progress report they want to view
     public void monthlyProgressOptionPanel() {
         String[] months = { "January", "February", "March", "April", "May", "June", "July", "August", "September",
                 "October", "November", "December" };
@@ -775,6 +929,10 @@ public class PracticeAppGui implements ActionListener {
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates a panel containing the text field and combo box for the
+    // users to enter the month and year whose practice progress report they want
+    // to view
     private void makeTextFieldsPaneForMonthlyProgress(JComboBox month, JTextField year) {
         textFieldsPane = new JPanel();
         textFieldsPane.setLayout(new GridLayout(2, 1));
@@ -784,6 +942,12 @@ public class PracticeAppGui implements ActionListener {
         textFieldsPane.add(year);
     }
 
+    // MODIFIES: this
+    // EFFECTS: displays the monthly practice progress page of the current song
+    // containing the user's practice progress in terms of daily total practice
+    // duration, daily average tempo, daily average mastery level, and daily bars
+    // practiced for all days in the given month of the year in which at least one
+    // practice session was started
     public void displayMonthlyProgress(String month, int year, List<Day> daysInMonth) {
         frame.setVisible(false);
 
@@ -811,6 +975,9 @@ public class PracticeAppGui implements ActionListener {
         constructFrame();
     }
 
+    // MODIFIES: this
+    // EFFECTS: creates a whole page panel which contains the entirety of the
+    // contents of the monthly practice history progress page
     private void assembleWholePagePanelMonthlyProgress() {
         wholePagePanel = new JPanel();
         wholePagePanel.setLayout(new BoxLayout(wholePagePanel, BoxLayout.PAGE_AXIS));
@@ -822,8 +989,10 @@ public class PracticeAppGui implements ActionListener {
         wholePagePanel.add(mainPanel);
     }
 
-    // EFFECTS: displays the total practice duration in a given day for all days in
-    // the dayList
+    // MODIFIES: this
+    // EFFECTS: creates a panel that displays the total practice duration in a given
+    // day for all days in the dayList, then adds the panel to the main content
+    // panel of the monthly practice progress page
     public void displayDurationProgress(List<Day> dayList) {
         JPanel durationPanel = new JPanel();
         durationPanel.setLayout(new GridLayout(1 + dayList.size(), 1));
@@ -842,8 +1011,10 @@ public class PracticeAppGui implements ActionListener {
         mainPanel.add(durationPanel);
     }
 
-    // EFFECTS: displays the average tempo in a given day for all days in the
-    // dayList
+    // MODIFIES: this
+    // EFFECTS: creates a panel that displays the average practice tempo in a given
+    // day for all days in the dayList, then adds the panel to the main content
+    // panel of the monthly practice progress page
     public void displayTempoProgress(List<Day> dayList) {
         JPanel tempoPanel = new JPanel();
         tempoPanel.setLayout(new GridLayout(1 + dayList.size(), 1));
@@ -861,8 +1032,10 @@ public class PracticeAppGui implements ActionListener {
         mainPanel.add(tempoPanel);
     }
 
-    // EFFECTS: displays the average mastery level in a given day for all days in
-    // the dayList
+    // MODIFIES: this
+    // EFFECTS: creates a panel that displays the average practice mastery level in
+    // a given day for all days in the dayList, then adds the panel to the main
+    // content panel of the monthly practice progress page
     public void displayMasteryProgress(List<Day> dayList) {
         JPanel masteryPanel = new JPanel();
         masteryPanel.setLayout(new GridLayout(1 + dayList.size(), 1));
@@ -880,8 +1053,10 @@ public class PracticeAppGui implements ActionListener {
         mainPanel.add(masteryPanel);
     }
 
-    // EFFECTS: displays the bars practiced in a given day for all days in the
-    // dayList
+    // MODIFIES: this
+    // EFFECTS: creates a panel that displays all bars practiced in a given
+    // day for all days in the dayList, then adds the panel to the main content
+    // panel of the monthly practice progress page
     public void displayBarsPracticedProgress(List<Day> dayList) {
         JPanel barPanel = new JPanel();
         barPanel.setLayout(new GridLayout(1 + dayList.size(), 1));
@@ -894,6 +1069,9 @@ public class PracticeAppGui implements ActionListener {
         mainPanel.add(barPanel);
     }
 
+    // MODIFIES: this, barPanel
+    // EFFECTS: creates a label displaying all bars practiced in a given
+    // day for all days in the dayList, then adds the labels to barPanel
     private void addBarsPracticedProgressToBarPanel(List<Day> dayList, JPanel barPanel) {
         for (Day day : dayList) {
             String allBarsPracticed = "";
@@ -916,7 +1094,10 @@ public class PracticeAppGui implements ActionListener {
         }
     }
 
-    // EFFECTS: prints a closing message and exits program
+    // MODIFIES: this
+    // EFFECTS: displays an option pane that confirms that the user wishes to quit
+    // the app, then displays a option pane with a thank you message, then exits the
+    // program
     public void quitApp() {
         optionPane = new JOptionPane();
         int result = JOptionPane.showOptionDialog(null, "Do you want to quit Conmoto Music Practice App?",
@@ -931,8 +1112,11 @@ public class PracticeAppGui implements ActionListener {
         }
     }
 
-    // EFFECTS: saves the SongLibrary to file
+    // MODIFIES: this
+    // EFFECTS: displays an option pane that confirms that the user wishes to save
+    // SongLibrary to file, then saves SongLibrary to file
     private void saveSongLibrary() {
+        optionPane = new JOptionPane();
         int result = JOptionPane.showConfirmDialog(optionPane, "Are you sure you want to save file?",
                 "Save file?", JOptionPane.OK_CANCEL_OPTION);
 
@@ -941,26 +1125,27 @@ public class PracticeAppGui implements ActionListener {
                 jsonWriter.open();
                 jsonWriter.write(songlibrary);
                 jsonWriter.close();
-
                 JOptionPane.showOptionDialog(null,
                         "Saved SongLibrary" + " to " + JSON_STORE,
                         "Message",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
-                displaySongList();
+                displaySongLibrary();
 
             } catch (FileNotFoundException e) {
                 JOptionPane.showOptionDialog(null,
                         "Unable to write to file: " + JSON_STORE,
                         "Warning",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
-                displaySongList();
+                displaySongLibrary();
             }
         }
     }
 
     // MODIFIES: this
-    // EFFECTS: loads SongLibrary from file
+    // EFFECTS: displays an option pane that confirms that the user wishes to load
+    // SongLibrary from file, then loads SongLibrary from file
     private void loadSongLibrary() {
+        optionPane = new JOptionPane();
         int result = JOptionPane.showConfirmDialog(optionPane, "Are you sure you want to load file?",
                 "Load file?", JOptionPane.OK_CANCEL_OPTION);
 
@@ -971,18 +1156,21 @@ public class PracticeAppGui implements ActionListener {
                         "Loaded SongLibrary" + " from " + JSON_STORE,
                         "Message",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.INFORMATION_MESSAGE, null, null, null);
-                displaySongList();
+                displaySongLibrary();
 
             } catch (IOException e) {
                 JOptionPane.showOptionDialog(null,
                         "Unable to read from file: " + JSON_STORE,
                         "Warning",
                         JOptionPane.DEFAULT_OPTION, JOptionPane.WARNING_MESSAGE, null, null, null);
-                displaySongList();
+                displaySongLibrary();
             }
         }
     }
 
+    // MODIFIES: this
+    // EFFECTS: A reusable helper method that creates a generic header for a page
+    // with the text s
     private JLabel makeGenericHeader(String s) {
         headerLabel = new JLabel();
         headerLabel.setText(s);
@@ -991,6 +1179,9 @@ public class PracticeAppGui implements ActionListener {
         return headerLabel;
     }
 
+    // MODIFIES: this
+    // EFFECTS: A reusable helper method that constructs and initializes a new
+    // frame. This method is used to construct the frame for all pages in the app
     private void constructFrame() {
         frame = new JFrame();
         frame.setTitle("Conmoto Music Practice App");
@@ -1002,6 +1193,8 @@ public class PracticeAppGui implements ActionListener {
         frame.pack();
     }
 
+    // MODIFIES: this
+    // EFFECTS: A reusable helper method that creates a button with the text s
     private JButton buttonFactory(String s) {
         JButton newButton = new JButton();
         newButton.setText(s);
@@ -1012,10 +1205,11 @@ public class PracticeAppGui implements ActionListener {
         return newButton;
     }
 
+    // EFFECTS: handles button presses from the user
     @SuppressWarnings("methodlength")
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == startAppButton) {
-            displaySongList();
+            displaySongLibrary();
         } else if (e.getSource() == addSongButton) {
             tryAddSong();
         } else if (e.getSource() == removeSongButton) {
@@ -1025,7 +1219,7 @@ public class PracticeAppGui implements ActionListener {
         } else if (e.getSource() == filterInstrumentButton) {
             filterInstrument();
         } else if (e.getSource() == returnToMainButton) {
-            displaySongList();
+            displaySongLibrary();
         } else if (e.getSource() == detailsButton) {
             songDetailsOptionPane();
         } else if (e.getSource() == returnToDetailsButton) {
