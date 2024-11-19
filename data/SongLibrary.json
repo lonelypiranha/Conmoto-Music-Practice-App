@@ -141,6 +141,16 @@
                 "startBar": 55,
                 "endBar": 454,
                 "mastery": 5.5
+            },
+            {
+                "duration": 7963,
+                "date": "2024-11-19",
+                "tempo": 1,
+                "startTime": "13:25:10.446798",
+                "endTime": "13:25:18.397762",
+                "startBar": 232,
+                "endBar": 444,
+                "mastery": 3.9
             }
         ],
         "composer": "trois",
@@ -183,6 +193,19 @@
                     "startBar": 55,
                     "endBar": 454,
                     "mastery": 5.5
+                }]
+            },
+            {
+                "date": "2024-11-19",
+                "sessions": [{
+                    "duration": 7963,
+                    "date": "2024-11-19",
+                    "tempo": 1,
+                    "startTime": "13:25:10.446798",
+                    "endTime": "13:25:18.397762",
+                    "startBar": 232,
+                    "endBar": 444,
+                    "mastery": 3.9
                 }]
             }
         ],

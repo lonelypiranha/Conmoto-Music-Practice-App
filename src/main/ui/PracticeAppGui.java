@@ -25,6 +25,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import exceptions.ImpossiblePracticeDetailsException;
 import model.Day;
 import model.Session;
 import model.Song;
@@ -36,8 +37,8 @@ import persistence.JsonWriter;
 // and start practice sessions on the songs. The app also allows the user to 
 // view their practice progress on each song in the song library.
 public class PracticeAppGui implements ActionListener {
-    private final ImageIcon logo = new ImageIcon("src/main/ui/on-2.png");
-    private final ImageIcon practicing = new ImageIcon("src/main/ui/practicing2.png");
+    private final ImageIcon logo = new ImageIcon("src/main/ui/assets/on-2.png");
+    private final ImageIcon practicing = new ImageIcon("src/main/ui/assets/practicing2.png");
 
     private JFrame frame;
 
