@@ -30,6 +30,8 @@ import model.Day;
 import model.Session;
 import model.Song;
 import model.SongLibrary;
+import model.Event;
+import model.EventLog;
 import persistence.JsonReader;
 import persistence.JsonWriter;
 
@@ -1109,6 +1111,10 @@ public class PracticeAppGui implements ActionListener {
                     "Thank you for using Conmoto Music Practice App! See you next time!", "Goodbye!",
                     JOptionPane.DEFAULT_OPTION,
                     JOptionPane.INFORMATION_MESSAGE, null, null, null);
+            EventLog el = EventLog.getInstance();
+            for (Event next : el) {
+                System.out.println(next.toString() + "\n");
+            }
             System.exit(0);
         }
     }

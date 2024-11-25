@@ -28,6 +28,7 @@ public class SongLibrary implements Writable {
     // EFFECTS: adds a song to the song library
     public void addSong(Song s) {
         songList.add(s);
+        EventLog.getInstance().logEvent(new Event("A song with the title " + s.getTitle() + " has been added."));
     }
 
     // MODIFIES: this
@@ -36,6 +37,7 @@ public class SongLibrary implements Writable {
     public boolean removeSong(Song s) {
         if (songList.contains(s)) {
             songList.remove(s);
+            EventLog.getInstance().logEvent(new Event("A song with the title " + s.getTitle() + " was removed."));
             return true;
         } else {
             return false;
@@ -51,6 +53,7 @@ public class SongLibrary implements Writable {
                 songFilteredInstrument.add(s);
             }
         }
+        EventLog.getInstance().logEvent(new Event("Song library is filtered by the instrument " + instrument));
         return songFilteredInstrument;
 
     }
@@ -64,6 +67,7 @@ public class SongLibrary implements Writable {
                 songFilteredComposer.add(s);
             }
         }
+        EventLog.getInstance().logEvent(new Event("Song library is filtered by the composer " + composer));
         return songFilteredComposer;
 
     }

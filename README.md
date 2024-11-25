@@ -22,3 +22,25 @@ This app will be used by **musicians** and **people who play a musical instrumen
 - You can locate my visual component by running the program, and the app logo will be the first thing that is displayed. You can also add a song, see the song details, then start a practice session with the song. In the practicing page, you will see a text **currently practicing** with the background image of a piano.
 - You can save the state of my application by clicking the **Save file** button and confirming that you want to save file.
 - You can reload the state of my application by clicking the **Load file** button and confirming that you want to load file.
+
+## Phase 4: Task 2
+Sun Nov 24 16:32:28 PST 2024
+A song with the title sonata has been added.
+
+Sun Nov 24 16:32:48 PST 2024
+A song with the title fantasiestucke has been added.
+
+Sun Nov 24 16:32:54 PST 2024
+Song library is filtered by the composer schumann
+
+Sun Nov 24 16:33:00 PST 2024
+Song library is filtered by the composer scriabin
+
+Sun Nov 24 16:33:05 PST 2024
+Song library is filtered by the instrument clarinet
+
+Sun Nov 24 16:33:10 PST 2024
+Song library is filtered by the instrument piano
+
+Sun Nov 24 16:33:20 PST 2024
+A song with the title fantasiestucke was removed.
