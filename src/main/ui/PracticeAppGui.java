@@ -4,8 +4,7 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.awt.event.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
@@ -1111,11 +1110,7 @@ public class PracticeAppGui implements ActionListener {
                     "Thank you for using Conmoto Music Practice App! See you next time!", "Goodbye!",
                     JOptionPane.DEFAULT_OPTION,
                     JOptionPane.INFORMATION_MESSAGE, null, null, null);
-            EventLog el = EventLog.getInstance();
-            for (Event next : el) {
-                System.out.println(next.toString() + "\n");
-            }
-            System.exit(0);
+            printLog();
         }
     }
 
@@ -1198,6 +1193,12 @@ public class PracticeAppGui implements ActionListener {
         frame.setVisible(true);
         frame.getContentPane().setBackground(new Color(2, 5, 98));
         frame.pack();
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(java.awt.event.WindowEvent windowEvent) {
+                printLog();
+            }
+        });
     }
 
     // MODIFIES: this
@@ -1210,6 +1211,14 @@ public class PracticeAppGui implements ActionListener {
         newButton.setFont(new Font("Futura", Font.PLAIN, 20));
         newButton.setForeground(new Color(2, 5, 98));
         return newButton;
+    }
+
+    public void printLog() {
+        EventLog el = EventLog.getInstance();
+        for (Event next : el) {
+            System.out.println(next.toString() + "\n");
+        }
+        System.exit(0);
     }
 
     // EFFECTS: handles button presses from the user
