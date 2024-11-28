@@ -1098,8 +1098,8 @@ public class PracticeAppGui implements ActionListener {
 
     // MODIFIES: this
     // EFFECTS: displays an option pane that confirms that the user wishes to quit
-    // the app, then displays a option pane with a thank you message, then exits the
-    // program
+    // the app, then displays a option pane with a thank you message, then prints
+    // the event log and exits the program
     public void quitApp() {
         optionPane = new JOptionPane();
         int result = JOptionPane.showOptionDialog(null, "Do you want to quit Conmoto Music Practice App?",
@@ -1110,7 +1110,7 @@ public class PracticeAppGui implements ActionListener {
                     "Thank you for using Conmoto Music Practice App! See you next time!", "Goodbye!",
                     JOptionPane.DEFAULT_OPTION,
                     JOptionPane.INFORMATION_MESSAGE, null, null, null);
-            printLog();
+            printLogThenExitProgram();
         }
     }
 
@@ -1196,7 +1196,7 @@ public class PracticeAppGui implements ActionListener {
         frame.addWindowListener(new WindowAdapter() {
             @Override
             public void windowClosing(java.awt.event.WindowEvent windowEvent) {
-                printLog();
+                printLogThenExitProgram();
             }
         });
     }
@@ -1213,7 +1213,8 @@ public class PracticeAppGui implements ActionListener {
         return newButton;
     }
 
-    public void printLog() {
+    // EFFECTS: prints the event log to the console, then exits the program
+    public void printLogThenExitProgram() {
         EventLog el = EventLog.getInstance();
         for (Event next : el) {
             System.out.println(next.toString() + "\n");
